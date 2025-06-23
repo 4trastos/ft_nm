@@ -133,9 +133,9 @@ nm test | grep RSA_new
 readelf -s test.o
 ```
 
-¿Necesitas ayuda con algún aspecto específico de la implementación? 😊
+---
 
-Vamos a explicar paso a paso qué ocurre cuando ejecutas `nm` con uno o más argumentos:
+**Vamos a explicar paso a paso qué ocurre cuando ejecutas `nm` con uno o más argumentos:
 
 ### **Qué hace `nm` (Proceso Interno Detallado para cada Archivo)**
 
