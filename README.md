@@ -235,3 +235,96 @@ Si `nm` se invoca con más de un argumento de archivo, repite el **proceso compl
 * **Independencia de Errores:** Si un archivo falla en su procesamiento (ej. no existe, formato no reconocido), `nm` reporta el error para ese archivo en particular, pero **continúa intentando procesar los siguientes archivos** en la lista de argumentos. No se detiene en el primer error.
 
 En resumen, `nm` es una herramienta vital para la introspección de binarios, y su funcionalidad, aunque parece sencilla desde fuera, implica un conocimiento profundo de la estructura de archivos ELF y un manejo robusto de la memoria y el sistema de archivos.
+
+---
+---
+---
+
+### **Claves para Implementar el Parser ELF Correctamente**
+
+1. **Estructura Fundamental del ELF**
+   ```c
+   ELF Header (Elf64_Ehdr)
+   ├── Program Headers (Opcional para nm)
+   └── Section Headers (Elf64_Shdr)
+       ├── .text (código)
+       ├── .data (datos inicializados)
+       ├── .bss (datos no inicializados)
+       ├── .symtab (TABLA DE SÍMBOLOS - tu objetivo principal)
+       └── .strtab (STRINGS DE SÍMBOLOS)
+   ```
+
+2. **Pasos Críticos del Parser**
+
+```mermaid
+graph TD
+    A[Mapear archivo con mmap] --> B[Verificar firma ELF: 0x7F 'E' 'L' 'F']
+    B --> C[Leer cabecera ELF Elf64_Ehdr]
+    C --> D[Localizar Section Headers e_shoff]
+    D --> E[Encontrar .symtab y .strtab]
+    E --> F[Iterar entradas de símbolos Elf64_Sym]
+    F --> G[Extraer nombre de .strtab + st_name]
+    G --> H[Determinar tipo con st_info y st_shndx]
+```
+
+3. **Cómo Determinar el Tipo de Símbolo**
+   - **Bind**: `ELF64_ST_BIND(sym->st_info)`
+     - `STB_GLOBAL` -> 'g' (mayúscula en nm)
+     - `STB_LOCAL` -> 'l' (minúscula en nm)
+   - **Type**: `ELF64_ST_TYPE(sym->st_info)`
+     - `STT_FUNC` -> 'T' (texto)
+     - `STT_OBJECT` -> 'D' (data)
+     - `STT_NOTYPE` -> '?' + verificar sección
+
+4. **Manejo de Secciones Clave**
+   ```c
+   if (sym->st_shndx == SHN_UNDEF)  // Símbolo indefinido
+      type = 'U';
+   else if (sym->st_shndx == SHN_ABS) // Símbolo absoluto
+      type = 'A';
+   else {
+      Elf64_Shdr *sec = &section_headers[sym->st_shndx];
+      if (sec->sh_type == SHT_NOBITS)  // Sección .bss
+          type = 'B';
+   }
+   ```
+
+5. **Retos Comunes y Soluciones**
+   - **Endianness**: Usar `__builtin_bswap32/64` si `e_ident[EI_DATA]` != host
+   - **32/64 bits**: Checkear `e_ident[EI_CLASS]` y usar Elf32/Elf64 dinámicamente
+   - **Secciones vacías**: Saltar símbolos con `st_name == 0`
+   - **Símbolos de depuración**: Filtrar por `STB_LOCAL` y tipo `STT_SECTION`
+
+### **Consejos de Implementación**
+1. Usa **uniones** para manejar Elf32/Elf64:
+   ```c
+   typedef union {
+       Elf64_Ehdr elf64;
+       Elf32_Ehdr elf32;
+   } t_elf_header;
+   ```
+
+2. Para secciones críticas:
+   ```c
+   #define ELF64_ST_BIND(info)          ((info) >> 4)
+   #define ELF64_ST_TYPE(info)          ((info) & 0xF)
+   ```
+
+3. Valida siempre offsets:
+   ```c
+   if (e_shoff > file_size) {
+       // Manejar error: cabecera fuera de rango
+   }
+   ```
+
+### **Pruebas Obligatorias**
+1. Archivos de diferentes arquitecturas:
+   ```bash
+   file /usr/bin/* | grep ELF | awk -F: '{print $1}' | xargs -n1 ./ft_nm
+   ```
+
+2. Casos límite:
+   - Archivos vacíos
+   - Binarios truncados
+   - Objetos sin tabla de símbolos
+   - Múltiples endianness
