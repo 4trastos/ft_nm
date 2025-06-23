@@ -2,6 +2,139 @@ Es fundamental entender a fondo qué hace una herramienta como `nm` antes de int
 
 El comando `nm` es una utilidad de línea de comandos en sistemas tipo Unix que se utiliza para **inspeccionar los archivos objeto, librerías estáticas y librerías compartidas (ejecutables) para listar los símbolos que contienen.** Estos símbolos son los nombres de funciones y variables que un programa usa o define.
 
+### Explicación + Demostraciones Prácticas
+---
+
+**¿Qué hace `nm`?**  
+El comando `nm` (symbol table **N**a**M**e viewer) inspecciona archivos binarios para extraer su tabla de símbolos. Estos símbolos incluyen:  
+1. Funciones definidas/usadas  
+2. Variables globales  
+3. Direcciones de memoria  
+4. Tipos de sección (texto, datos, bss)  
+
+**Estructura clave:**  
+```c
+typedef struct {
+    Elf64_Addr    st_value;  // Dirección del símbolo
+    Elf64_Xword   st_info;   // Tipo y binding
+    char          st_name[]; // Nombre (en .strtab)
+} Elf64_Sym;
+```
+
+---
+
+### 🔍 Demostraciones Prácticas (¡Pruébalas en tu terminal!)
+
+#### 1. Símbolos en un programa simple:
+**Código (`test.c`):**
+```c
+#include <stdio.h>
+int global_var = 42;
+
+void func() {
+    static int static_var;
+    printf("Hello\n");
+}
+
+int main() {
+    func();
+    return 0;
+}
+```
+
+**Compilación y análisis:**
+```bash
+gcc -c test.c -o test.o  # Compila sin enlazar
+nm test.o
+```
+
+**Salida típica:**
+```
+0000000000000000 T func
+0000000000000004 C global_var
+0000000000000000 T main
+                 U printf
+0000000000000004 b static_var
+```
+
+#### 2. Tipos de símbolos comunes:
+| Símbolo | Significado              | Ejemplo real       |
+|---------|--------------------------|--------------------|
+| **T**   | Text (función definida)  | `00000000 T main`  |
+| **U**   | Undefined (extern)       | `U printf`         |
+| **D**   | Data (var. global init)  | `00000004 D var`   |
+| **B**   | BSS (var. global no init)| `00000000 B buffer`|
+| **C**   | Common (uninitialized)   | `C global_uninit`  |
+
+#### 3. Análisis de bibliotecas:
+```bash
+# Inspeccionar libc (¡cuidado! salida enorme)
+nm /usr/lib/libc.dylib | head -20
+
+# Buscar una función específica
+nm /usr/lib/libc.dylib | grep -w "malloc"
+```
+**Salida:**  
+`000000000007f0f0 T _malloc`
+
+#### 4. Opciones avanzadas:
+```bash
+# Mostrar tamaños de símbolos
+nm -S test.o
+
+# Ordenar por dirección de memoria
+nm -n test.o
+
+# Mostrar solo símbolos externos
+nm -g test.o
+```
+
+#### 5. Caso real: Depuración de símbolos faltantes
+```bash
+# Compilar sin incluir biblioteca
+gcc test.c -o test -lcrypto
+
+# Error al ejecutar:
+./test: symbol lookup error: ./test: undefined symbol: RSA_new
+
+# Diagnóstico con nm:
+nm test | grep RSA_new
+```
+**Salida:**  
+`U RSA_new` → ¡Falta enlazar OpenSSL!
+
+---
+
+### 🧠 Puntos clave para tu proyecto `nm` de 42:
+1. **Parsing ELF:** Deberás interpretar:
+   - Section headers (`.symtab`, `.strtab`)
+   - Symbol types (`STT_FUNC`, `STT_OBJECT`)
+   - Binding (`STB_LOCAL`, `STB_GLOBAL`)
+
+2. **Retos comunes:**
+   ```c
+   // Manejo de diferentes arquitecturas
+   #ifdef __LP64__
+   typedef Elf64_Ehdr Elf_Header;
+   #else
+   typedef Elf32_Ehdr Elf_Header;
+   #endif
+   ```
+
+3. **Opciones a implementar:**
+   ```bash
+   -a  # Mostrar todos los símbolos
+   -r  # Orden inverso
+   -u  # Sólo símbolos no definidos
+   ```
+
+**Consejo final:** Usa `readelf -s` como referencia para comparar salidas durante tu desarrollo:
+```bash
+readelf -s test.o
+```
+
+¿Necesitas ayuda con algún aspecto específico de la implementación? 😊
+
 Vamos a explicar paso a paso qué ocurre cuando ejecutas `nm` con uno o más argumentos:
 
 ### **Qué hace `nm` (Proceso Interno Detallado para cada Archivo)**
