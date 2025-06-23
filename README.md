@@ -121,11 +121,13 @@ nm test | grep RSA_new
    #endif
    ```
 
-3. **Opciones a implementar:**
+3. **Opciones a implementar Bonus part:**
    ```bash
    -a  # Mostrar todos los símbolos
    -r  # Orden inverso
    -u  # Sólo símbolos no definidos
+   -p  # Sólo símbolos globales
+   -g  # Sin ordenamiento
    ```
 
 **Consejo final:** Usa `readelf -s` como referencia para comparar salidas durante tu desarrollo:
@@ -135,7 +137,7 @@ readelf -s test.o
 
 ---
 
-**Vamos a explicar paso a paso qué ocurre cuando ejecutas `nm` con uno o más argumentos:
+### 🧠 Vamos a explicar paso a paso qué ocurre cuando ejecutas `nm` con uno o más argumentos:
 
 ### **Qué hace `nm` (Proceso Interno Detallado para cada Archivo)**
 
