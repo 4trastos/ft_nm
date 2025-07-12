@@ -14,7 +14,7 @@ int     ft_checkarg(char *file_name, char *program_name)
         ft_handle_file_error(program_name, file_name, errno);
         return (0);
     }
-    success = fstat(fd, &my_file_info); //(file status) es una llamada al sistema POSIX que se utiliza para obtener información detallada sobre un archivo.
+    success = fstat(fd, &my_file_info); //(file status) Llamada al sistema POSIX para obtener los metadatos de un archivo.
     if (success == -1)
     {
         ft_handle_file_error(program_name, file_name, errno);
@@ -63,19 +63,17 @@ int main(int argc, char **argv)
     program_name_str = argv[0];
     if (argc == 1)
     {
-        ft_putstr_stderr("ft_nm: a.out: No such file or directory\n");
+        ft_putstr_stderr("ft_nm: a.out: No such file\n");
         return (1);
     }
     argv++;
     ft_create_list(&sfile, argv, &flag, program_name_str);
     if (flag && argc == 2)
         return(1);
-    ft_print_stack_files(sfile);
     flag = 0;
     ft_fileFormat_id(&sfile, flag); // (formato ELF);
     write(1, "Formato de archivo identificado\n", 32);
-    //ft_nmap(argv);
-    //ft_file_Format_Id();
+    ft_print_stack_files(sfile);
     //ft_parsing_header();
     //ft_location_headings();
     //ft_location_names();

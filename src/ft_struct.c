@@ -63,8 +63,9 @@ void    ft_print_stack_files(t_stack_file *sfile)
 
     while (current != NULL)
     {
-        printf("\nNodo %d: \nArchivo '%s', \nPosición original: %d, \nVálido: %s, \nTipo: %d, \nFlag: %d\n",
-               node_count, current->file, current->position, current->validity ? "Sí" : "No", current->type, current->flag);
+        printf("\nNodo %d: \nArchivo '%s', \nPosición original: %d, \nVálido: %s, \nTipo: %d, \nFlag: %d, \nELF: %s\n",
+               node_count, current->file, current->position, current->validity ? "Sí" : "No", current->type, current->flag, 
+               current->elf ? "Sí" : "No");
         current = current->next;
         node_count++;
     }

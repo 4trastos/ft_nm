@@ -33,10 +33,11 @@ typedef struct s_stack_file
     char                *file;
     int                 validity;
     int                 position;
+    int                 elf;
     t_nmflags           flag;
     t_argtype           type;
-    unsigned char       *file_content_ptr;      // ¡Campo para el puntero mmap!
-    size_t              file_size;              // ¡Campo para el tamaño del archivo!
+    unsigned char       *file_content_ptr;      // ¡Campo para el puntero del ELF en la RAM!
+    size_t              file_size;
     struct s_stack_file *next;
 }   t_stack_file;
 
