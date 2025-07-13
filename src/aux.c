@@ -23,3 +23,16 @@ void    ft_handle_file_error(char *program_name, char *file_name, int errnum)
     ft_putstr_stderr("\n");
     return;
 }
+
+void    ft_handle_file_error_two(char *program_name, char *file_name, char *str)
+{
+    ft_putstr_stderr(program_name);
+    ft_putstr_stderr(": ");
+
+    ft_putstr_stderr(file_name);
+    ft_putstr_stderr(": ");
+
+    ft_putstr_stderr(str);
+    ft_putstr_stderr("\n");
+    return;
+}

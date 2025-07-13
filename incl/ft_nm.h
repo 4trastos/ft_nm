@@ -10,6 +10,21 @@
 # include <fcntl.h>
 # include <sys/stat.h>
 # include <errno.h>
+# include <stdint.h>
+# include <elf.h>
+
+typedef enum e_endianness
+{
+    ENDIAN_UNKNOWN = 0,
+    ENDIAN_LSB,             // Little-endian (menos significativo primero)
+    ENDIAN_MSB,             // Big-endian (más significativo primero)
+}   t_endianness;
+
+typedef enum e_bits
+{
+    BITS_32 = 32,
+    BITS_64 = 64,
+}   t_bits;
 
 typedef enum e_argtype
 {
@@ -36,20 +51,18 @@ typedef struct s_stack_file
     int                 elf;
     t_nmflags           flag;
     t_argtype           type;
+    t_bits              bits;
+    t_endianness        endianness;
     unsigned char       *file_content_ptr;      // ¡Campo para el puntero del ELF en la RAM!
     size_t              file_size;
     struct s_stack_file *next;
 }   t_stack_file;
 
-typedef struct {
-    unsigned char e_ident[16];
-    // ... campos cabecera ELF
-}   ElfHeader;
-
 //*** auxiliary functions ***
 
 void            ft_putstr_stderr(char *str);
 void            ft_handle_file_error(char *program_name, char *file_name, int errnum);
+void            ft_handle_file_error_two(char *program_name, char *file_name, char *str);
 char            *ft_split(char **str, char c);
 int             ft_findflags(char *str);
 

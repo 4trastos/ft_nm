@@ -71,9 +71,7 @@ int main(int argc, char **argv)
     if (flag && argc == 2)
         return(1);
     flag = 0;
-    ft_fileFormat_id(&sfile, flag); // (formato ELF);
-    write(1, "Formato de archivo identificado\n", 32);
-    ft_print_stack_files(sfile);
+    ft_fileFormat_id(&sfile, flag);
     //ft_parsing_header();
     //ft_location_headings();
     //ft_location_names();
@@ -84,7 +82,7 @@ int main(int argc, char **argv)
     //ft_ordering_symbols();
     //ft_output();
     //ft_clear_closing();
-    write(1, "OK\n", 3);
+    ft_print_stack_files(sfile);
 
     return (0);
 }

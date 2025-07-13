@@ -54,7 +54,7 @@ void    ft_print_stack_files(t_stack_file *sfile)
     t_stack_file *current = sfile;
     int node_count = 0;
 
-    printf("\n--- Contenido del Stack de Archivos ---\n");
+    printf("\n******* Contenido del Stack de Archivos *******");
     if (current == NULL)
     {
         printf("El stack está vacío.\n");
@@ -63,11 +63,12 @@ void    ft_print_stack_files(t_stack_file *sfile)
 
     while (current != NULL)
     {
-        printf("\nNodo %d: \nArchivo '%s', \nPosición original: %d, \nVálido: %s, \nTipo: %d, \nFlag: %d, \nELF: %s\n",
+        printf("\nNodo %d: \nArchivo '%s', \nPosición original: %d, \nVálido: %s, "
+                "\nTipo: %d, \nFlag: %d, \nELF: %s, \nBits: %d, \nSize: %ld,\n",
                node_count, current->file, current->position, current->validity ? "Sí" : "No", current->type, current->flag, 
-               current->elf ? "Sí" : "No");
+               current->elf ? "Sí" : "No", current->bits, current->file_size);
         current = current->next;
         node_count++;
     }
-    printf("--- Fin del Stack (Total: %d nodos) ---\n\n", node_count);
+    printf("******* Fin del Stack (Total: %d nodos) *******\n\n", node_count);
 }
