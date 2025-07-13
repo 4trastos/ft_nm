@@ -1,6 +1,6 @@
 #include "../incl/ft_nm.h"
 
-void    ft_freelist(t_stack_file **files)
+void    ft_clear_closing(t_stack_file **files)
 {
     t_stack_file *aux;
     

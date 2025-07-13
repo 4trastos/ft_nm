@@ -72,7 +72,7 @@ int main(int argc, char **argv)
         return(1);
     flag = 0;
     ft_fileFormat_id(&sfile, flag);
-    //ft_parsing_header();
+    ft_parsing_header(&sfile);
     //ft_location_headings();
     //ft_location_names();
     //ft_location_symbol();
@@ -81,11 +81,10 @@ int main(int argc, char **argv)
     //ft_tilter_collecting();
     //ft_ordering_symbols();
     //ft_output();
-    //ft_clear_closing();
     
     ft_print_stack_files(sfile);
     
-    ft_freelist(&sfile);
+    ft_clear_closing(&sfile);  // FALTA CERRAR NMAP (munmap)
 
     return (0);
 }

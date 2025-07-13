@@ -49,12 +49,14 @@ typedef struct s_stack_file
     int                 validity;
     int                 position;
     int                 elf;
+    Elf32_Ehdr          *elf32_header;
+    Elf64_Ehdr          *elf64_header;
+    unsigned char       *file_content_ptr;      // ¡Campo para el puntero del ELF en la RAM!
+    size_t              file_size;
     t_nmflags           flag;
     t_argtype           type;
     t_bits              bits;
     t_endianness        endianness;
-    unsigned char       *file_content_ptr;      // ¡Campo para el puntero del ELF en la RAM!
-    size_t              file_size;
     struct s_stack_file *next;
 }   t_stack_file;
 
@@ -71,12 +73,13 @@ int             ft_findflags(char *str);
 void            ft_stack_node(t_stack_file **sfile, t_stack_file *new);
 t_stack_file    *ft_create_node(char *str, int pos, int status);
 void            ft_print_stack_files(t_stack_file *sfile);
-void            ft_freelist(t_stack_file **files);
+void            ft_clear_closing(t_stack_file **files);
 
 
 //*** explicit functions ***
 
 void            ft_fileFormat_id(t_stack_file **sfile, int flag);
+void            ft_parsing_header(t_stack_file **files);
 
 #endif
 
