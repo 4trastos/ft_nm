@@ -26,7 +26,9 @@ void    ft_stack_node(t_stack_file **sfile, t_stack_file *new)
         return ;   
     }
     while (aux->next != NULL)
+    {
         aux = aux->next;
+    }
     aux->next = new;
     new->next = NULL;
 }

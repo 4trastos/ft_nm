@@ -82,7 +82,10 @@ int main(int argc, char **argv)
     //ft_ordering_symbols();
     //ft_output();
     //ft_clear_closing();
+    
     ft_print_stack_files(sfile);
+    
+    ft_freelist(&sfile);
 
     return (0);
 }

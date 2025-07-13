@@ -71,6 +71,7 @@ int             ft_findflags(char *str);
 void            ft_stack_node(t_stack_file **sfile, t_stack_file *new);
 t_stack_file    *ft_create_node(char *str, int pos, int status);
 void            ft_print_stack_files(t_stack_file *sfile);
+void            ft_freelist(t_stack_file **files);
 
 
 //*** explicit functions ***

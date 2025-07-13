@@ -1,5 +1,19 @@
 #include "../incl/ft_nm.h"
 
+void    ft_freelist(t_stack_file **files)
+{
+    t_stack_file *aux;
+    
+    aux = *files;
+    while (aux)
+    {
+        *files = aux->next;
+        free(aux);
+        aux = *files;
+    }
+    *files = NULL;
+}
+
 void    ft_putstr_stderr(char *str)
 {
     int i = 0;
