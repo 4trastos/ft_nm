@@ -3,15 +3,16 @@
 void    ft_parsing_header(t_stack_file **files)
 {
     t_stack_file    *aux;
-    unsigned char   *elf;
 
     aux = *files;
-    elf = aux->file_content_ptr;
     while (aux)
     {
         if (aux->validity == 1 && aux->elf == 1 && aux->file_content_ptr != NULL)
         {
-
+            if (aux->bits == BITS_32)
+                aux->elf32_header = (Elf32_Ehdr*)aux->file_content_ptr;
+            else if (aux->bits == BITS_64)
+                aux->elf64_header = (Elf64_Ehdr*)aux->file_content_ptr;
         }
         aux = aux->next;
     }
