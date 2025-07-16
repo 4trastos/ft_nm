@@ -80,6 +80,7 @@ void            ft_clear_closing(t_stack_file **files);
 
 void            ft_fileFormat_id(t_stack_file **sfile, int flag);
 void            ft_parsing_header(t_stack_file **files);
+void            ft_location_headings(t_stack_file **files);
 
 #endif
 

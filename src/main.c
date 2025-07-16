@@ -73,7 +73,7 @@ int main(int argc, char **argv)
     flag = 0;
     ft_fileFormat_id(&sfile, flag);
     ft_parsing_header(&sfile);
-    //ft_location_headings();
+    ft_location_headings(&sfile);
     //ft_location_names();
     //ft_location_symbol();
     //ft_parsing_symbol_ent();
