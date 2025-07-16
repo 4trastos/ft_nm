@@ -66,16 +66,17 @@ void ft_print_stack_files(t_stack_file *sfile)
     while (current != NULL)
     {
         printf("\nNodo %d:", node_count);
-        printf("\n  Archivo: '%s'", current->file);
-        printf("\n  Posición original: %d", current->position);
-        printf("\n  Válido: %s", current->validity ? "Sí" : "No");
-        printf("\n  Tipo: %d", current->type);
+        printf("\n  File Name: '%s'", current->file);
+        printf("\n  Position List: %d", current->position);
+        printf("\n  Valid: %s", current->validity ? "Yes" : "No");
+        printf("\n  Type: %d", current->type);
         printf("\n  Flag: %d", current->flag);
-        printf("\n  ELF: %s", current->elf ? "Sí" : "No");
-        printf("\n  Bits: %d", current->bits);
+        printf("\n  ELF: %s", current->elf ? "Yes" : "No");
+        printf("\n  Architecture Class: %d", current->bits);
         printf("\n  Size: %zu", current->file_size);
-        printf("\n  ELF en RAM: %p", current->file_content_ptr);
+        printf("\n  Pointer in RAM: %p", current->file_content_ptr);
         printf("\n  Endianness: %d", current->endianness);
+        
 
         // Imprimir información del encabezado ELF según la arquitectura
         if (current->elf)
@@ -92,6 +93,9 @@ void ft_print_stack_files(t_stack_file *sfile)
                 printf("\n    Type: %d", current->elf32_header->e_type);
                 printf("\n    Machine: %d", current->elf32_header->e_machine);
                 printf("\n    Entry point: 0x%x", current->elf32_header->e_entry);
+                printf("\n    ELF Version: %d", current->elf32_header->e_ident[EI_VERSION]);
+                printf("\n    Offset Program Header Table (e_phoff): 0x%X", current->elf32_header->e_phoff);
+                printf("\n    Section Header Table Offset (e_shoff): 0x%X\n", current->elf32_header->e_shoff);
             }
             else if (current->bits == BITS_64 && current->elf64_header)
             {
@@ -105,6 +109,9 @@ void ft_print_stack_files(t_stack_file *sfile)
                 printf("\n    Type: %d", current->elf64_header->e_type);
                 printf("\n    Machine: %d", current->elf64_header->e_machine);
                 printf("\n    Entry point: 0x%lx", current->elf64_header->e_entry);
+                printf("\n    ELF Version: %d", current->elf64_header->e_ident[EI_VERSION]);
+                printf("\n    Offset Program Header Table (e_phoff): 0x%lX", current->elf64_header->e_phoff);
+                printf("\n    Section Header Table Offset (e_shoff): 0x%lX\n", current->elf64_header->e_shoff);
             }
             else
             {

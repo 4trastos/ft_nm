@@ -13,6 +13,12 @@ void    ft_parsing_header(t_stack_file **files)
                 aux->elf32_header = (Elf32_Ehdr*)aux->file_content_ptr;
             else if (aux->bits == BITS_64)
                 aux->elf64_header = (Elf64_Ehdr*)aux->file_content_ptr;
+            else
+            {
+                aux->validity = 0;
+                printf("ft_nm: %s: Error: Unknown bitness for file \n", aux->file);
+                return;
+            }
         }
         aux = aux->next;
     }

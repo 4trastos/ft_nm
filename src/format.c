@@ -62,11 +62,6 @@ void    ft_fileFormat_id(t_stack_file **sfile, int flag)
                         aux->file_content_ptr = elf;
                         find_bits(elf, aux);
                         find_endianness(elf, aux);
-                        //printf("\nES UN ARCHIVO ELF VÁLIDO: ====>>> %02X, %02X, %02X, %02X\n", elf[0], elf[1], elf[2], elf[3]);
-                        //printf("La dirección de ELF en la RAM: %p  ==>>  Tamaño del archivo: %zu\n", aux->file_content_ptr, aux->file_size);
-                        //printf("\nELF ES DE : ====>>> %d  BITS\n", aux->bits);
-                        //printf("\nELF endianness por file : ====>>> %d \n", aux->endianness);
-                        //printf("\n");
                     }
                 }
             }
