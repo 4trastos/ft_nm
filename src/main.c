@@ -66,6 +66,7 @@ int main(int argc, char **argv)
         ft_putstr_stderr("ft_nm: a.out: No such file\n");
         return (1);
     }
+    init_host_endianness();
     argv++;
     ft_create_list(&sfile, argv, &flag, program_name_str);
     if (flag && argc == 2)
@@ -73,7 +74,7 @@ int main(int argc, char **argv)
     flag = 0;
     ft_fileFormat_id(&sfile, flag);
     ft_parsing_header(&sfile);
-    ft_location_headings(&sfile);
+    //ft_location_headings(&sfile);
     //ft_location_names();
     //ft_location_symbol();
     //ft_parsing_symbol_ent();

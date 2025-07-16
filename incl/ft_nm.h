@@ -12,6 +12,17 @@
 # include <errno.h>
 # include <stdint.h>
 # include <elf.h>
+# include <byteswap.h>
+
+typedef enum e_host_endianness
+{
+    HOST_ENDIAN_UNKNOWN = 0,
+    HOST_ENDIAN_LSB,
+    HOST_ENDIAN_MSB,
+    
+} t_host_endianness;
+
+extern t_host_endianness g_host_endianness;
 
 typedef enum e_endianness
 {
@@ -60,6 +71,20 @@ typedef struct s_stack_file
     struct s_stack_file *next;
 }   t_stack_file;
 
+//*** Functions to reverse the order of bytes ***
+uint16_t    swap16(uint16_t val);
+uint32_t    swap32(uint32_t val);
+uint64_t     swap64(uint64_t val);
+
+//*** Generic functions to obtain ELF values applying swap if necessary ***
+uint16_t    get_elf_u16(uint16_t val_from_elf, t_endianness file_endianness);
+uint32_t    get_elf_u32(uint32_t val_from_elf, t_endianness file_endianness);
+uint64_t    get_elf_u64(uint64_t val_from_elf, t_endianness file_endianness);
+
+//*** Function to determine the endianness of the host ***
+
+void        init_host_endianness(void);
+
 //*** auxiliary functions ***
 
 void            ft_putstr_stderr(char *str);
@@ -83,11 +108,3 @@ void            ft_parsing_header(t_stack_file **files);
 void            ft_location_headings(t_stack_file **files);
 
 #endif
-
-
-
-/*typedef struct {
-    Elf64_Addr    st_value;  // Dirección del símbolo
-    Elf64_Xword   st_info;   // Tipo y binding
-    char          st_name[]; // Nombre (en .strtab)
-} Elf64_Sym;*/
