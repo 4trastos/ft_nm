@@ -1,6 +1,35 @@
 #include "../incl/ft_nm.h"
 
-void    location_headings(t_stack_file **files) //Tabla de Cabeceras de Sección (SHT)
+void    location_names(t_stack_file **files)
+{
+    t_stack_file    *aux;
+    uint64_t        sh_offset;
+    uint16_t        shstrtab;
+    uint16_t        sh_size;
+
+    aux = *files;
+    while (aux)
+    {
+        if (aux->validity == 1 && aux->elf == 1 && aux->file_content_ptr != NULL)
+        {
+            sh_offset = 0;
+            shstrtab = 0;
+            sh_size = 0;
+            if (aux->bits == BITS_32)
+            {
+                shstrtab = get_elf_u16(aux->elf32_header->e_shstrndx, aux->endianness); 
+            }
+            else
+            {
+                shstrtab = get_elf_u16(aux->elf64_header->e_shstrndx, aux->endianness);
+            }
+        }
+        aux = aux->next;
+    }
+    
+}
+
+void    location_headings(t_stack_file **files) //Localizar Tabla de Cabeceras de Sección (SHT)
 {
     t_stack_file    *aux;
     uint64_t        sh_offset;

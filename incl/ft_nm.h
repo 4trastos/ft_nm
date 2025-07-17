@@ -70,6 +70,12 @@ typedef struct s_stack_file
     Elf64_Ehdr          *elf64_header;
     Elf32_Shdr          *elf32_sh_table;
     Elf64_Shdr          *elf64_sh_table;
+    void                *shstrtag_ptr;
+    size_t              shstrtab_size;
+    void                *symtab_ptr;
+    size_t              symtab_size;
+    void                *strtab_ptr;
+    size_t              strtab_size;
     struct s_stack_file *next;
 }   t_stack_file;
 
@@ -109,5 +115,6 @@ void            clear_closing(t_stack_file **files);
 void            fileFormat_id(t_stack_file **sfile, int flag);
 void            parsing_header(t_stack_file **files);
 void            location_headings(t_stack_file **files);
+void            location_names(t_stack_file **files);
 
 #endif

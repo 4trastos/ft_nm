@@ -75,7 +75,7 @@ int main(int argc, char **argv)
     fileFormat_id(&sfile, flag);
     parsing_header(&sfile);
     location_headings(&sfile);
-    //location_names();
+    location_names(&sfile);
     //location_symbol();
     //parsing_symbol_ent();
     //extr_detc_symbol_type();
