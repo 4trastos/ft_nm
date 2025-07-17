@@ -56,18 +56,18 @@ void ft_print_stack_files(t_stack_file *sfile)
     t_stack_file *current = sfile;
     int node_count = 0;
 
-    printf("\n******* Contenido del Stack de Archivos *******");
+    printf("\n******* File Stack Contents *******");
     if (current == NULL)
     {
-        printf("\nEl stack está vacío.\n");
+        printf("\nThe stack is empty.\n");
         return;
     }
 
     // Imprimir la endianness del host una sola vez al principio
-    printf("\n--- Endianness del Sistema Host: %s ---\n",
+    printf("\n--- Endianness of the Host System: %s ---\n",
            (g_host_endianness == HOST_ENDIAN_LSB) ? "Little-Endian" :
            (g_host_endianness == HOST_ENDIAN_MSB) ? "Big-Endian" :
-           "Desconocida");
+           "Unknown");
 
     while (current != NULL)
     {
@@ -76,7 +76,15 @@ void ft_print_stack_files(t_stack_file *sfile)
         printf("\n  Position List: %d", current->position);
         printf("\n  Valid: %s", current->validity ? "Yes" : "No");
         printf("\n  Type: %d", current->type);
-        printf("\n  Flag: %d", current->flag);
+        printf("\n  Flag: %s",
+            (current->flag == NM_ARG_FILE) ? "No Flag" : 
+            (current->flag == NM_FLAG_A) ? "-a" :
+            (current->flag == NM_FLAG_G) ? "-g" :
+            (current->flag == NM_FLAG_P) ? "-p" :
+            (current->flag == NM_FLAG_R) ? "-r" :
+            (current->flag == NM_FLAG_R) ? "-r" :
+            (current->flag == NM_FLAG_U) ? "-u" :
+            "Unknown");
         printf("\n  ELF: %s", current->elf ? "Yes" : "No");
         printf("\n  Architecture Class: %d", current->bits);
         printf("\n  Size: %zu", current->file_size);
@@ -86,7 +94,7 @@ void ft_print_stack_files(t_stack_file *sfile)
         printf("\n  File Endianness: %s",
                (current->endianness == ENDIAN_LSB) ? "Little-Endian (LSB)" :
                (current->endianness == ENDIAN_MSB) ? "Big-Endian (MSB)" :
-               "Desconocida");
+               "Unknown");
         
         // Indicar si se necesitará byte swapping
         if (current->validity && current->elf && current->endianness != ENDIAN_UNKNOWN)
@@ -94,11 +102,11 @@ void ft_print_stack_files(t_stack_file *sfile)
              if ((current->endianness == ENDIAN_LSB && g_host_endianness == HOST_ENDIAN_MSB) ||
                  (current->endianness == ENDIAN_MSB && g_host_endianness == HOST_ENDIAN_LSB))
              {
-                 printf(" (Requiere Byte Swapping)");
+                 printf(" (Requires Byte Swapping)");
              }
              else
              {
-                 printf(" (No requiere Byte Swapping)");
+                 printf(" (No Byte Swapping required)");
              }
         }
         printf("\n");
@@ -161,17 +169,17 @@ void ft_print_stack_files(t_stack_file *sfile)
             }
             else
             {
-                printf("\n  Header: No disponible (problema con bits o puntero de encabezado)");
+                printf("\n  Header:Not available (problem with bits or header pointer)");
             }
         }
         else
         {
-            printf("\n  Header: No es archivo ELF o no es válido");
+            printf("\n  Header: It is not an ELF file or it is not valid");
         }
 
         current = current->next;
         node_count++;
         printf("\n");
     }
-    printf("******* Fin del Stack (Total: %d nodos) *******\n\n", node_count);
+    printf("******* End of Stack (Total: %d nodes) *******\n\n", node_count);
 }
