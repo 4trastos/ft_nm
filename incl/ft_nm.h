@@ -60,14 +60,16 @@ typedef struct s_stack_file
     int                 validity;
     int                 position;
     int                 elf;
-    Elf32_Ehdr          *elf32_header;
-    Elf64_Ehdr          *elf64_header;
-    unsigned char       *file_content_ptr;      // ¡Campo para el puntero del ELF en la RAM!
+    unsigned char       *file_content_ptr;
     size_t              file_size;
     t_nmflags           flag;
     t_argtype           type;
     t_bits              bits;
     t_endianness        endianness;
+    Elf32_Ehdr          *elf32_header;
+    Elf64_Ehdr          *elf64_header;
+    Elf32_Shdr          *elf32_sh_table;
+    Elf64_Shdr          *elf64_sh_table;
     struct s_stack_file *next;
 }   t_stack_file;
 
