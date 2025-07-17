@@ -40,12 +40,10 @@ uint64_t    swap64(uint64_t val)
 
 static bool needs_swap(t_endianness file_endianness)
 {
-    if (file_endianness == ENDIAN_LSB && g_host_endianness == HOST_ENDIAN_LSB)
-        return  (true);
-    else if (file_endianness == ENDIAN_MSB && g_host_endianness == HOST_ENDIAN_MSB)
-        return (true);
-    else
+    if ((file_endianness == ENDIAN_LSB && g_host_endianness == HOST_ENDIAN_LSB) || 
+        (file_endianness == ENDIAN_MSB && g_host_endianness == HOST_ENDIAN_MSB))
         return (false);
+    return (true);
 }
 
 uint16_t get_elf_u16(uint16_t val_from_elf, t_endianness file_endianness)
