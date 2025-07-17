@@ -65,7 +65,7 @@ void    fileFormat_id(t_stack_file **sfile, int flag)
                     handle_file_error("./ft_nm", aux->file, errno);
                 else
                 {
-                    elf = mmap(NULL, my_file_info.st_size, PROT_READ, MAP_PRIVATE, fd, 0); // nmap: carga el contenido del ELF en memoria RAM.
+                    elf = mmap(NULL, my_file_info.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
                     if (elf == MAP_FAILED)
                         handle_file_error("mmap failed:", aux->file, errno);
                     else if (my_file_info.st_size < 4 || elf[0] != 0x7F || elf[1] != 'E' || elf[2] != 'L' || elf[3] != 'F')

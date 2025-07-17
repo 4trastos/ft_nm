@@ -1,6 +1,6 @@
 #include "../incl/ft_nm.h"
 
-void    location_headings(t_stack_file **files)
+void    location_headings(t_stack_file **files) //Tabla de Cabeceras de Sección (SHT)
 {
     t_stack_file    *aux;
     uint64_t        sh_offset;
@@ -39,14 +39,6 @@ void    location_headings(t_stack_file **files)
                     aux->elf32_sh_table = (Elf32_Shdr*)(aux->file_content_ptr + sh_offset);
                 else
                     aux->elf64_sh_table = (Elf64_Shdr*)(aux->file_content_ptr + sh_offset);
-
-                printf("\n--- Section Header Table Info for '%s' ---\n", aux->file);
-                printf("  SHT offset: 0x%lx\n", sh_offset);
-                printf("  Number of sections: %u\n", sh_num);
-                printf("  Section header size: %u bytes\n", sh_entsize);
-                printf("  SHT pointer in RAM: %p\n", (aux->bits == BITS_32) ? 
-                    (void*)aux->elf32_sh_table : (void*)aux->elf64_sh_table);
-                printf("-------------------------------------------\n");
             }
         }
         aux = aux->next;
