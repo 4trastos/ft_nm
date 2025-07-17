@@ -1,6 +1,21 @@
 #include "../incl/ft_nm.h"
 #include <sys/mman.h>
 
+void    get_flags(char *file, t_nmflags *flag)
+{
+ 
+    if (ft_strcmp(file, "-a") == 0)
+        *flag = NM_FLAG_A;
+    else if (ft_strcmp(file, "-g") == 0)
+        *flag = NM_FLAG_G;
+    else if (ft_strcmp(file, "-u") == 0)
+        *flag = NM_FLAG_U;
+    else if (ft_strcmp(file, "-r") == 0)
+        *flag = NM_FLAG_R;
+    else
+        *flag = NM_FLAG_P;
+}
+
 void    find_endianness(unsigned char *elf, t_stack_file *aux)
 {
     if (elf[EI_DATA] == ELFDATA2LSB)
@@ -68,6 +83,8 @@ void    fileFormat_id(t_stack_file **sfile, int flag)
             flag = 0;
             close(fd);
         }
+        else if (aux->validity == 1 && aux->type == ARG_TYPE_FLAG)
+            get_flags(aux->file, &aux->flag);
         aux = aux->next;
     } 
 }

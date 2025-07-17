@@ -92,6 +92,7 @@ void            handle_file_error(char *program_name, char *file_name, int errnu
 void            handle_file_error_two(char *program_name, char *file_name, char *str);
 char            *ft_split(char **str, char c);
 int             findflags(char *str);
+int             ft_strcmp(char *s1, char *s2);
 
 //*** strcut functions ***
 
