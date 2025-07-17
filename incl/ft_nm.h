@@ -87,24 +87,24 @@ void        init_host_endianness(void);
 
 //*** auxiliary functions ***
 
-void            ft_putstr_stderr(char *str);
-void            ft_handle_file_error(char *program_name, char *file_name, int errnum);
-void            ft_handle_file_error_two(char *program_name, char *file_name, char *str);
+void            putstr_stderr(char *str);
+void            handle_file_error(char *program_name, char *file_name, int errnum);
+void            handle_file_error_two(char *program_name, char *file_name, char *str);
 char            *ft_split(char **str, char c);
-int             ft_findflags(char *str);
+int             findflags(char *str);
 
 //*** strcut functions ***
 
-void            ft_stack_node(t_stack_file **sfile, t_stack_file *new);
-t_stack_file    *ft_create_node(char *str, int pos, int status);
-void            ft_print_stack_files(t_stack_file *sfile);
-void            ft_clear_closing(t_stack_file **files);
+void            stack_node(t_stack_file **sfile, t_stack_file *new);
+t_stack_file    *create_node(char *str, int pos, int status);
+void            print_stack_files(t_stack_file *sfile);
+void            clear_closing(t_stack_file **files);
 
 
 //*** explicit functions ***
 
-void            ft_fileFormat_id(t_stack_file **sfile, int flag);
-void            ft_parsing_header(t_stack_file **files);
-void            ft_location_headings(t_stack_file **files);
+void            fileFormat_id(t_stack_file **sfile, int flag);
+void            parsing_header(t_stack_file **files);
+void            location_headings(t_stack_file **files);
 
 #endif

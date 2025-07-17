@@ -1,6 +1,6 @@
 #include "../incl/ft_nm.h"
 
-int ft_findflags(char *str)
+int findflags(char *str)
 {
     int i;
 
@@ -15,7 +15,7 @@ int ft_findflags(char *str)
     return (1);
 }
 
-void    ft_stack_node(t_stack_file **sfile, t_stack_file *new)
+void    stack_node(t_stack_file **sfile, t_stack_file *new)
 {
     t_stack_file    *aux;
 
@@ -33,7 +33,7 @@ void    ft_stack_node(t_stack_file **sfile, t_stack_file *new)
     new->next = NULL;
 }
 
-t_stack_file    *ft_create_node(char *str, int pos, int status)
+t_stack_file    *create_node(char *str, int pos, int status)
 {
     t_stack_file    *new;
 
@@ -43,7 +43,7 @@ t_stack_file    *ft_create_node(char *str, int pos, int status)
     new->file = str;
     new->position = pos + 1;
     new->validity = status;
-    if (ft_findflags(str))
+    if (findflags(str))
         new->type = ARG_TYPE_FLAG;
     else
         new->type = ARG_TYPE_FILE;
@@ -51,7 +51,7 @@ t_stack_file    *ft_create_node(char *str, int pos, int status)
     return (new);
 }
 
-void ft_print_stack_files(t_stack_file *sfile)
+void print_stack_files(t_stack_file *sfile)
 {
     t_stack_file *current = sfile;
     int node_count = 0;

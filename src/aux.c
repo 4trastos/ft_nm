@@ -1,6 +1,6 @@
 #include "../incl/ft_nm.h"
 
-void    ft_clear_closing(t_stack_file **files)
+void    clear_closing(t_stack_file **files)
 {
     t_stack_file *aux;
     
@@ -14,7 +14,7 @@ void    ft_clear_closing(t_stack_file **files)
     *files = NULL;
 }
 
-void    ft_putstr_stderr(char *str)
+void    putstr_stderr(char *str)
 {
     int i = 0;
     while (str[i] != '\0')
@@ -25,28 +25,28 @@ void    ft_putstr_stderr(char *str)
     return;
 }
 
-void    ft_handle_file_error(char *program_name, char *file_name, int errnum)
+void    handle_file_error(char *program_name, char *file_name, int errnum)
 {
-    ft_putstr_stderr(program_name);
-    ft_putstr_stderr(": ");
+    putstr_stderr(program_name);
+    putstr_stderr(": ");
 
-    ft_putstr_stderr(file_name);
-    ft_putstr_stderr(": ");
+    putstr_stderr(file_name);
+    putstr_stderr(": ");
 
-    ft_putstr_stderr(strerror(errnum));
-    ft_putstr_stderr("\n");
+    putstr_stderr(strerror(errnum));
+    putstr_stderr("\n");
     return;
 }
 
-void    ft_handle_file_error_two(char *program_name, char *file_name, char *str)
+void    handle_file_error_two(char *program_name, char *file_name, char *str)
 {
-    ft_putstr_stderr(program_name);
-    ft_putstr_stderr(": ");
+    putstr_stderr(program_name);
+    putstr_stderr(": ");
 
-    ft_putstr_stderr(file_name);
-    ft_putstr_stderr(": ");
+    putstr_stderr(file_name);
+    putstr_stderr(": ");
 
-    ft_putstr_stderr(str);
-    ft_putstr_stderr("\n");
+    putstr_stderr(str);
+    putstr_stderr("\n");
     return;
 }

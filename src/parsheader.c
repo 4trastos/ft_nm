@@ -1,11 +1,11 @@
 #include "../incl/ft_nm.h"
 
-//void    ft_location_headings(t_stack_file **files)
+//void    location_headings(t_stack_file **files)
 //{
 //    
 //}
 
-void    ft_parsing_header(t_stack_file **files)
+void    parsing_header(t_stack_file **files)
 {
     t_stack_file    *aux;
 
