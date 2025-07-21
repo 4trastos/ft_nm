@@ -3,30 +3,44 @@
 void    location_names(t_stack_file **files)
 {
     t_stack_file    *aux;
-    uint64_t        sh_offset;
-    uint16_t        shstrtab;
-    uint16_t        sh_size;
+    Elf32_Shdr      *shstrtab_shdr;
+    Elf64_Shdr      *shstrtab_shdr64;
+    uint16_t        shstrtab_idx;       // index de la sección
+    uint64_t        sh_offset;          // Offset de la sección
+    size_t          sh_size;            // Tamaño de la sección
 
     aux = *files;
     while (aux)
     {
         if (aux->validity == 1 && aux->elf == 1 && aux->file_content_ptr != NULL)
         {
-            sh_offset = 0;
-            shstrtab = 0;
-            sh_size = 0;
             if (aux->bits == BITS_32)
             {
-                shstrtab = get_elf_u16(aux->elf32_header->e_shstrndx, aux->endianness); 
+                shstrtab_idx = get_elf_u16(aux->elf32_header->e_shstrndx, aux->endianness);
+                shstrtab_shdr = &aux->elf32_sh_table[shstrtab_idx];
+                sh_offset = get_elf_u32(shstrtab_shdr->sh_offset, aux->endianness);
+                sh_size = get_elf_u32(shstrtab_shdr->sh_size, aux->endianness);
             }
             else
             {
-                shstrtab = get_elf_u16(aux->elf64_header->e_shstrndx, aux->endianness);
+                shstrtab_idx = get_elf_u16(aux->elf64_header->e_shstrndx, aux->endianness);
+                shstrtab_shdr64 = &aux->elf64_sh_table[shstrtab_idx];
+                sh_offset = get_elf_u64(shstrtab_shdr64->sh_offset, aux->endianness);
+                sh_size = get_elf_u64(shstrtab_shdr64->sh_size, aux->endianness);
+            }
+            if (sh_offset >= aux->file_size || (sh_offset + sh_size) > aux->file_size || sh_size == 0)
+            {
+                handle_file_error_two("./ft_nm", aux->file, "Error: Invalid .shstrtab section offset or size");
+                aux->validity = 0;
+            }
+            else
+            {
+                aux->shstrtag_ptr = aux->file_content_ptr + sh_offset;
+                aux->shstrtab_size = sh_size;
             }
         }
         aux = aux->next;
     }
-    
 }
 
 void    location_headings(t_stack_file **files) //Localizar Tabla de Cabeceras de Sección (SHT)

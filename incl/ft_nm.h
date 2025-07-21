@@ -82,7 +82,7 @@ typedef struct s_stack_file
 //*** Functions to reverse the order of bytes ***
 uint16_t    swap16(uint16_t val);
 uint32_t    swap32(uint32_t val);
-uint64_t     swap64(uint64_t val);
+uint64_t    swap64(uint64_t val);
 
 //*** Generic functions to obtain ELF values applying swap if necessary ***
 uint16_t    get_elf_u16(uint16_t val_from_elf, t_endianness file_endianness);

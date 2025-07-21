@@ -30,7 +30,7 @@ void print_stack_files(t_stack_file *sfile)
             (current->flag == NM_FLAG_A) ? "-a" :
             (current->flag == NM_FLAG_G) ? "-g" :
             (current->flag == NM_FLAG_P) ? "-p" :
-            (current->flag == NM_FLAG_R) ? "-r" : // Corregido: esta línea se duplicaba antes
+            (current->flag == NM_FLAG_R) ? "-r" :
             (current->flag == NM_FLAG_U) ? "-u" :
             "Unknown");
         printf("\n  ELF: %s", current->elf ? "Yes" : "No");
@@ -44,12 +44,8 @@ void print_stack_files(t_stack_file *sfile)
                (current->endianness == ENDIAN_MSB) ? "Big-Endian (MSB)" :
                "Unknown");
         
-        // Indicar si se necesitará byte swapping
         if (current->validity && current->elf && current->endianness != ENDIAN_UNKNOWN)
         {
-             // La lógica de needs_swap es la que se usa internamente en get_elf_uX
-             // Aquí solo indicamos al usuario. Asegúrate de que needs_swap en tu otro archivo
-             // esté correctamente implementada (file_endianness != host_endianness).
              if ((current->endianness == ENDIAN_LSB && g_host_endianness == HOST_ENDIAN_MSB) ||
                  (current->endianness == ENDIAN_MSB && g_host_endianness == HOST_ENDIAN_LSB))
              {
@@ -116,13 +112,12 @@ void print_stack_files(t_stack_file *sfile)
                 printf("\n  Header: Not available (problem with bits or header pointer)");
             }
 
-            // --- AÑADIR INFORMACIÓN DE LA SHT AQUÍ ---
-            // Solo imprimir si el archivo es válido y los punteros a la SHT han sido calculados
+            // --- Sección Header Table (SHT) Info ---
             if (current->validity && 
                 ((current->bits == BITS_32 && current->elf32_sh_table != NULL) ||
                  (current->bits == BITS_64 && current->elf64_sh_table != NULL)))
             {
-                uint64_t sh_offset = (current->bits == BITS_32) ? 
+                uint64_t sh_offset_from_hdr = (current->bits == BITS_32) ? 
                                      get_elf_u32(current->elf32_header->e_shoff, current->endianness) :
                                      get_elf_u64(current->elf64_header->e_shoff, current->endianness);
                 uint16_t sh_num = (current->bits == BITS_32) ? 
@@ -133,18 +128,28 @@ void print_stack_files(t_stack_file *sfile)
                                       get_elf_u16(current->elf64_header->e_shentsize, current->endianness);
 
                 printf("\n  --- Section Header Table (SHT) Info ---");
-                printf("\n    SHT Offset (e_shoff): 0x%lX", sh_offset);
+                printf("\n    SHT Offset (e_shoff): 0x%lX", sh_offset_from_hdr);
                 printf("\n    Number of Sections (e_shnum): %u", sh_num);
                 printf("\n    Section Entry Size (e_shentsize): %u bytes", sh_entsize);
                 printf("\n    SHT Pointer in RAM: %p\n", (current->bits == BITS_32) ? 
                     (void*)current->elf32_sh_table : (void*)current->elf64_sh_table);
+
+                // --- Información de .shstrtab ---
+                if (current->shstrtag_ptr != NULL && current->shstrtab_size > 0)
+                {
+                    printf("\n  --- .shstrtab (Section Names String Table) Info ---");
+                    printf("\n    .shstrtab Pointer in RAM: %p", current->shstrtag_ptr);
+                    printf("\n    .shstrtab Size: %zu bytes\n", current->shstrtab_size);
+                }
+                else
+                {
+                    printf("\n  .shstrtab Info: Not located or invalid.\n");
+                }
             }
             else
             {
-                // Si la SHT no se pudo localizar o no es válida
                 printf("\n  Section Header Table: Not located or invalid.\n");
             }
-
         }
         else // Si el archivo no es ELF o no es válido
         {
