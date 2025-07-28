@@ -58,10 +58,8 @@ typedef struct s_symbol_info
 {
     char                    *name;
     char                    char_type;
-    char                    binding;
-    unsigned char           type;
+    unsigned char           st_info;
     uint64_t                value;
-    uint64_t                size;
     uint16_t                shndx;
     struct s_symbol_info    *next;
 }   t_symbol_info;
@@ -95,18 +93,18 @@ typedef struct s_stack_file
 }   t_stack_file;
 
 //*** Functions to reverse the order of bytes ***
-uint16_t    swap16(uint16_t val);
-uint32_t    swap32(uint32_t val);
-uint64_t    swap64(uint64_t val);
+uint16_t        swap16(uint16_t val);
+uint32_t        swap32(uint32_t val);
+uint64_t        swap64(uint64_t val);
 
 //*** Generic functions to obtain ELF values applying swap if necessary ***
-uint16_t    get_elf_u16(uint16_t val_from_elf, t_endianness file_endianness);
-uint32_t    get_elf_u32(uint32_t val_from_elf, t_endianness file_endianness);
-uint64_t    get_elf_u64(uint64_t val_from_elf, t_endianness file_endianness);
+uint16_t        get_elf_u16(uint16_t val_from_elf, t_endianness file_endianness);
+uint32_t        get_elf_u32(uint32_t val_from_elf, t_endianness file_endianness);
+uint64_t        get_elf_u64(uint64_t val_from_elf, t_endianness file_endianness);
 
 //*** Function to determine the endianness of the host ***
 
-void        init_host_endianness(void);
+void            init_host_endianness(void);
 
 //*** auxiliary functions ***
 
@@ -120,10 +118,13 @@ const char      *get_section_name(uint32_t name_offset, void *shstrtab_ptr, size
 
 //*** strcut functions ***
 
-void            stack_node(t_stack_file **sfile, t_stack_file *new);
 t_stack_file    *create_node(char *str, int pos, int status);
+t_symbol_info   *create_symbnode(char *name, uint64_t value, unsigned char st_info, uint16_t shndx);
+void            stack_node(t_stack_file **sfile, t_stack_file *new);
+void            stack_symbnode(t_symbol_info **list, t_symbol_info *new);
 void            print_stack_files(t_stack_file *sfile);
-void            clear_closing(t_stack_file **files);
+void            clear_closing(t_stack_file **sfiles);
+void            clear_symbol_list(t_symbol_info **list);
 
 //*** explicit functions ***
 

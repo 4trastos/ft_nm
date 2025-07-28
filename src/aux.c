@@ -15,18 +15,26 @@ int     ft_strcmp(const char *s1, char *s2)
     return (0);
 }
 
-void    clear_closing(t_stack_file **files)
+void    clear_closing(t_stack_file **sfiles)
 {
-    t_stack_file *aux;
+    t_stack_file    *current;
+    t_stack_file    *next_file;
     
-    aux = *files;
-    while (aux)
+    current = *sfiles;
+    while (current != NULL)
     {
-        *files = aux->next;
-        free(aux);
-        aux = *files;
+        next_file = current->next;
+        if (current->file_content_ptr)
+        {
+            if (munmap(current->file_content_ptr, current->file_size) == -1)
+                perror("munmap failed");
+        }
+        clear_symbol_list(&current->symbol_list);
+        free(current->file);
+        free(current);
+        current = next_file;
     }
-    *files = NULL;
+    *sfiles = NULL;
 }
 
 void    putstr_stderr(char *str)
