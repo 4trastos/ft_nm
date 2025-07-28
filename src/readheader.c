@@ -1,10 +1,10 @@
 #include "../incl/ft_nm.h"
 
-const char  *get_section_name(uint32_t name_offset, void *shstrtab_ptr, size_t shstrtab_size)
+const char  *get_section_name(uint32_t offset_name, void *shstrtab_ptr, size_t shstrtab_size)
 {
-    if (name_offset >= shstrtab_size)
+    if (offset_name >= shstrtab_size)
         return (NULL);
-    return ((const char*)(shstrtab_ptr + name_offset));
+    return ((const char*)(shstrtab_ptr + offset_name));
 }
 
 void    iterytable(t_stack_file **file)

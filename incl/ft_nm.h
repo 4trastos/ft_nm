@@ -112,11 +112,14 @@ void            putstr_stderr(char *str);
 void            handle_file_error(char *program_name, char *file_name, int errnum);
 void            handle_file_error_two(char *program_name, char *file_name, char *str);
 char            *ft_split(char **str, char c);
+char            *ft_strdup(char *str);
 int             findflags(char *str);
 int             ft_strcmp(const char *s1, char *s2);
-const char      *get_section_name(uint32_t name_offset, void *shstrtab_ptr, size_t shstrtab_size);
+size_t          ft_strlen(char *str);
+const char      *get_section_name(uint32_t offset_name, void *shstrtab_ptr, size_t shstrtab_size);
+const char      *get_symbol_name(uint32_t offset_name, void *strtab_ptr, size_t strtab_size);
 
-//*** strcut functions ***
+//*** struct functions ***
 
 t_stack_file    *create_node(char *str, int pos, int status);
 t_symbol_info   *create_symbnode(char *name, uint64_t value, unsigned char st_info, uint16_t shndx);

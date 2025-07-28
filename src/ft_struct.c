@@ -26,9 +26,7 @@ void    stack_node(t_stack_file **sfile, t_stack_file *new)
         return ;   
     }
     while (aux->next != NULL)
-    {
         aux = aux->next;
-    }
     aux->next = new;
     new->next = NULL;
 }
@@ -47,6 +45,39 @@ t_stack_file    *create_node(char *str, int pos, int status)
         new->type = ARG_TYPE_FLAG;
     else
         new->type = ARG_TYPE_FILE;
+    new->next = NULL;
+    return (new);
+}
+
+void    stack_symbnode(t_symbol_info **list, t_symbol_info *new)
+{
+    t_symbol_info   *aux;
+
+    aux = *list;
+    if (*list == NULL)
+    {
+        *list = new;
+        return;
+    }
+    while (aux->next != NULL)
+        aux = aux->next;
+    aux->next = new;
+    new->next = NULL;
+}
+
+t_symbol_info   *create_symbnode(char *name, uint64_t value, unsigned char st_info, uint16_t shndx)
+{
+    t_symbol_info   *new;
+
+    new = (t_symbol_info *)mallox(sizeof(t_symbol_info));
+    if (!new)
+        return (NULL);
+    new->name = ft_strdup(name);
+    if (new->name == NULL)
+        return (NULL);
+    new->value = value;
+    new->shndx = shndx;
+    new->st_info = st_info;
     new->next = NULL;
     return (new);
 }
