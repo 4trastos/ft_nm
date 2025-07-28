@@ -70,12 +70,13 @@ typedef struct s_stack_file
     Elf64_Ehdr          *elf64_header;
     Elf32_Shdr          *elf32_sh_table;
     Elf64_Shdr          *elf64_sh_table;
-    void                *shstrtag_ptr;
-    size_t              shstrtab_size;
-    void                *symtab_ptr;
-    size_t              symtab_size;
+    void                *shstrtab_ptr;
     void                *strtab_ptr;
+    void                *symtab_ptr;
+    size_t              shstrtab_size;
     size_t              strtab_size;
+    size_t              symtab_size;
+    uint32_t            symtab_link;
     struct s_stack_file *next;
 }   t_stack_file;
 
@@ -100,7 +101,7 @@ void            handle_file_error(char *program_name, char *file_name, int errnu
 void            handle_file_error_two(char *program_name, char *file_name, char *str);
 char            *ft_split(char **str, char c);
 int             findflags(char *str);
-int             ft_strcmp(char *s1, char *s2);
+int             ft_strcmp(const char *s1, char *s2);
 
 //*** strcut functions ***
 
@@ -116,5 +117,7 @@ void            fileFormat_id(t_stack_file **sfile, int flag);
 void            parsing_header(t_stack_file **files);
 void            location_headings(t_stack_file **files);
 void            location_names(t_stack_file **files);
+void            iterytable(t_stack_file **file);
+const char      *get_section_name(uint32_t name_offset, void *shstrtab_ptr, size_t shstrtab_size);
 
 #endif

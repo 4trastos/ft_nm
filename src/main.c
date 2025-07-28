@@ -72,11 +72,11 @@ int main(int argc, char **argv)
     if (flag && argc == 2)
         return(1);
     flag = 0;
-    fileFormat_id(&sfile, flag);
-    parsing_header(&sfile);
-    location_headings(&sfile);
-    location_names(&sfile);
-    //location_symbol();
+    fileFormat_id(&sfile, flag);        // Identifica 32/64 bits y endianness
+    parsing_header(&sfile);             // Mapea la cabecera ELF
+    location_headings(&sfile);          // Mapea la tabla de cabeceras de sección
+    location_names(&sfile);             // Mapea la .shstrtab
+    iterytable(&sfile);                 // Itera las secciones para encontrar .symtab y .strtab
     //parsing_symbol_ent();
     //extr_detc_symbol_type();
     //tilter_collecting();

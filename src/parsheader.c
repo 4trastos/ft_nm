@@ -35,7 +35,7 @@ void    location_names(t_stack_file **files)
             }
             else
             {
-                aux->shstrtag_ptr = aux->file_content_ptr + sh_offset;
+                aux->shstrtab_ptr = aux->file_content_ptr + sh_offset;
                 aux->shstrtab_size = sh_size;
             }
         }

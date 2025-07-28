@@ -135,10 +135,10 @@ void print_stack_files(t_stack_file *sfile)
                     (void*)current->elf32_sh_table : (void*)current->elf64_sh_table);
 
                 // --- Información de .shstrtab ---
-                if (current->shstrtag_ptr != NULL && current->shstrtab_size > 0)
+                if (current->shstrtab_ptr != NULL && current->shstrtab_size > 0)
                 {
                     printf("\n  --- .shstrtab (Section Names String Table) Info ---");
-                    printf("\n    .shstrtab Pointer in RAM: %p", current->shstrtag_ptr);
+                    printf("\n    .shstrtab Pointer in RAM: %p", current->shstrtab_ptr);
                     printf("\n    .shstrtab Size: %zu bytes\n", current->shstrtab_size);
                 }
                 else
