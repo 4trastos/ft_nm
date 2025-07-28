@@ -54,30 +54,44 @@ typedef enum e_nmflags
     NM_FLAG_P = 1 << 4,     //00010000 = 16 decimal (el bit 4 está encendido)
 }   t_nmflags;
 
+typedef struct s_symbol_info
+{
+    char                    *name;
+    char                    char_type;
+    char                    binding;
+    unsigned char           type;
+    uint64_t                value;
+    uint64_t                size;
+    uint16_t                shndx;
+    struct s_symbol_info    *next;
+}   t_symbol_info;
+
+
 typedef struct s_stack_file
 {
-    char                *file;
-    int                 validity;
-    int                 position;
-    int                 elf;
-    unsigned char       *file_content_ptr;
-    size_t              file_size;
-    t_nmflags           flag;
-    t_argtype           type;
-    t_bits              bits;
-    t_endianness        endianness;
-    Elf32_Ehdr          *elf32_header;
-    Elf64_Ehdr          *elf64_header;
-    Elf32_Shdr          *elf32_sh_table;
-    Elf64_Shdr          *elf64_sh_table;
-    void                *shstrtab_ptr;
-    void                *strtab_ptr;
-    void                *symtab_ptr;
-    size_t              shstrtab_size;
-    size_t              strtab_size;
-    size_t              symtab_size;
-    uint32_t            symtab_link;
-    struct s_stack_file *next;
+    char                    *file;
+    int                     validity;
+    int                     position;
+    int                     elf;
+    unsigned char           *file_content_ptr;
+    size_t                  file_size;
+    t_nmflags               flag;
+    t_argtype               type;
+    t_bits                  bits;
+    t_endianness            endianness;
+    t_symbol_info           *symbol_list;
+    Elf32_Ehdr              *elf32_header;
+    Elf64_Ehdr              *elf64_header;
+    Elf32_Shdr              *elf32_sh_table;
+    Elf64_Shdr              *elf64_sh_table;
+    void                    *shstrtab_ptr;
+    void                    *strtab_ptr;
+    void                    *symtab_ptr;
+    size_t                  shstrtab_size;
+    size_t                  strtab_size;
+    size_t                  symtab_size;
+    uint32_t                symtab_link;
+    struct s_stack_file     *next;
 }   t_stack_file;
 
 //*** Functions to reverse the order of bytes ***
@@ -102,6 +116,7 @@ void            handle_file_error_two(char *program_name, char *file_name, char 
 char            *ft_split(char **str, char c);
 int             findflags(char *str);
 int             ft_strcmp(const char *s1, char *s2);
+const char      *get_section_name(uint32_t name_offset, void *shstrtab_ptr, size_t shstrtab_size);
 
 //*** strcut functions ***
 
@@ -110,7 +125,6 @@ t_stack_file    *create_node(char *str, int pos, int status);
 void            print_stack_files(t_stack_file *sfile);
 void            clear_closing(t_stack_file **files);
 
-
 //*** explicit functions ***
 
 void            fileFormat_id(t_stack_file **sfile, int flag);
@@ -118,6 +132,6 @@ void            parsing_header(t_stack_file **files);
 void            location_headings(t_stack_file **files);
 void            location_names(t_stack_file **files);
 void            iterytable(t_stack_file **file);
-const char      *get_section_name(uint32_t name_offset, void *shstrtab_ptr, size_t shstrtab_size);
+void            parsing_symbol_ent(t_stack_file **file);
 
 #endif

@@ -77,7 +77,7 @@ int main(int argc, char **argv)
     location_headings(&sfile);          // Mapea la tabla de cabeceras de sección
     location_names(&sfile);             // Mapea la .shstrtab
     iterytable(&sfile);                 // Itera las secciones para encontrar .symtab y .strtab
-    //parsing_symbol_ent();
+    parsing_symbol_ent(&sfile);
     //extr_detc_symbol_type();
     //tilter_collecting();
     //ordering_symbols();
