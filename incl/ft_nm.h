@@ -138,5 +138,6 @@ void            location_headings(t_stack_file **files);
 void            location_names(t_stack_file **files);
 void            iterytable(t_stack_file **file);
 void            parsing_symbol_ent(t_stack_file **file);
+void            extr_detc_symbol_type(t_stack_file **file);
 
 #endif

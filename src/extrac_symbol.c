@@ -1,0 +1,47 @@
+#include "../incl/ft_nm.h"
+
+void    extr_detc_symbol_type(t_stack_file **file)
+{
+    t_stack_file    *aux;
+    t_symbol_info   *sym;
+    unsigned char   st_info_val;
+    unsigned char   symbol_type;
+    unsigned char   symbol_bindign;
+    uint16_t        shndx_val;
+
+    aux = *file;
+    while (aux)
+    {
+        if (aux->validity == 1 && aux->elf == 1 && aux->symbol_list != NULL)
+        {
+            sym = aux->symbol_list;
+            while (sym)
+            {
+                st_info_val = sym->st_info;
+                shndx_val = sym->shndx;
+                symbol_type = 0;
+                symbol_bindign = 0;
+
+                if (aux->bits == BITS_32)
+                {
+                    symbol_type = ELF32_ST_TYPE(st_info_val);
+                    symbol_bindign = ELF32_ST_BIND(st_info_val);
+                }
+                else
+                {
+                    symbol_type = ELF64_ST_TYPE(st_info_val);
+                    symbol_bindign = ELF64_ST_BIND(st_info_val);
+                }
+                // Aquí es donde empieza la lógica para determinar 'char_type'
+                // Esto es complejo y depende de muchas condiciones:
+                // - symbol_binding (STB_LOCAL, STB_GLOBAL, STB_WEAK)
+                // - symbol_type (STT_NOTYPE, STT_OBJECT, STT_FUNC, STT_SECTION, STT_FILE, etc.)
+                // - st_shndx_val (SHN_ABS, SHN_COMMON, SHN_UNDEF)
+                // - El tipo de sección a la que apunta st_shndx_val (SHT_PROGBITS, SHT_NOBITS, SHT_STRTAB, etc.)
+                sym = sym->next;
+            }
+            
+        }
+        aux = aux->next;
+    }
+}
