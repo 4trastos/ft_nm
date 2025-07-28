@@ -69,15 +69,19 @@ t_symbol_info   *create_symbnode(char *name, uint64_t value, unsigned char st_in
 {
     t_symbol_info   *new;
 
-    new = (t_symbol_info *)mallox(sizeof(t_symbol_info));
+    new = (t_symbol_info *)malloc(sizeof(t_symbol_info));
     if (!new)
         return (NULL);
     new->name = ft_strdup(name);
-    if (new->name == NULL)
+    if (name && !new->name)
+    {
+        free(new);
         return (NULL);
+    }
     new->value = value;
     new->shndx = shndx;
     new->st_info = st_info;
+    new->char_type = '\0';
     new->next = NULL;
     return (new);
 }

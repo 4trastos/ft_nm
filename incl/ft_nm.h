@@ -13,6 +13,7 @@
 # include <stdint.h>
 # include <elf.h>
 # include <byteswap.h>
+# include <sys/mman.h>
 
 typedef enum e_host_endianness
 {
@@ -116,8 +117,8 @@ char            *ft_strdup(char *str);
 int             findflags(char *str);
 int             ft_strcmp(const char *s1, char *s2);
 size_t          ft_strlen(char *str);
+char            *get_symbol_name(uint32_t offset_name, void *strtab_ptr, size_t strtab_size);
 const char      *get_section_name(uint32_t offset_name, void *shstrtab_ptr, size_t shstrtab_size);
-const char      *get_symbol_name(uint32_t offset_name, void *strtab_ptr, size_t strtab_size);
 
 //*** struct functions ***
 
