@@ -139,5 +139,7 @@ void            location_names(t_stack_file **files);
 void            iterytable(t_stack_file **file);
 void            parsing_symbol_ent(t_stack_file **file);
 void            extr_detc_symbol_type(t_stack_file **file);
+void            logic_deter_symbol(t_symbol_info *sym, uint16_t shndx, unsigned char type, unsigned char bindign);
+void            logic_deterc_type(bool upper, bool lower, t_symbol_info *sym, unsigned char type);
 
 #endif
