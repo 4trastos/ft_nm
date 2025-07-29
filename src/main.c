@@ -81,11 +81,11 @@ int main(int argc, char **argv)
     extr_detc_symbol_type(&sfile);      // Asigna el carácter de tipo (ej., 'T', 'D', 'U') a cada símbolo
     tilter_collecting(&sfile);          // Filtra símbolos
     ordering_symbols(&sfile);           // Ordena símbolos alfabéticamente
-    output(&sfile);                     // Imprime la salida final de nm
+    ft_output(&sfile, argc);               // Imprime la salida final de nm
     
-    print_stack_files(sfile);
+    //print_stack_files(sfile);
     
-    clear_closing(&sfile);  // FALTA CERRAR NMAP (munmap)
+    clear_closing(&sfile);
 
     return (0);
 }

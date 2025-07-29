@@ -62,10 +62,6 @@ void    iterytable(t_stack_file **file)
                 {
                     shdrr = &aux->elf64_sh_table[i];
                     section_name = get_section_name(get_elf_u32(shdrr->sh_name, aux->endianness), aux->shstrtab_ptr, aux->shstrtab_size);
-                    if (section_name)
-                        printf("  Section[%d]: %s (Type: %u)\n", i, section_name, get_elf_u32(shdrr->sh_type, aux->endianness));
-                    else
-                        printf("  Section[%d]: <Invalid Name Offset> (Type: %u)\n", i, get_elf_u32(shdrr->sh_name, aux->endianness));
                     if (get_elf_u32(shdrr->sh_type, aux->endianness) == SHT_SYMTAB)
                     {
                         if (aux->symtab_ptr == NULL)
