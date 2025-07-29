@@ -80,7 +80,7 @@ int main(int argc, char **argv)
     parsing_symbol_ent(&sfile);         // Parsea los símbolos del archivo y los guarda en la lista de símbolos 
     extr_detc_symbol_type(&sfile);      // Asigna el carácter de tipo (ej., 'T', 'D', 'U') a cada símbolo
     tilter_collecting(&sfile);          // Filtra símbolos
-    //ordering_symbols(&sfile);           // Ordena símbolos alfabéticamente
+    ordering_symbols(&sfile);           // Ordena símbolos alfabéticamente
     //output();                         // Imprime la salida final de nm
     
     print_stack_files(sfile);
