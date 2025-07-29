@@ -118,6 +118,7 @@ int             findflags(char *str);
 int             ft_strcmp(const char *s1, char *s2);
 size_t          ft_strlen(char *str);
 char            *get_symbol_name(uint32_t offset_name, void *strtab_ptr, size_t strtab_size);
+char            ft_tolower(char c);
 const char      *get_section_name(uint32_t offset_name, void *shstrtab_ptr, size_t shstrtab_size);
 
 //*** struct functions ***
@@ -140,6 +141,6 @@ void            iterytable(t_stack_file **file);
 void            parsing_symbol_ent(t_stack_file **file);
 void            extr_detc_symbol_type(t_stack_file **file);
 void            logic_deter_symbol(t_symbol_info *sym, uint16_t shndx, unsigned char type, unsigned char bindign);
-void            logic_deterc_type(bool upper, bool lower, t_symbol_info *sym, unsigned char type);
+void            logic_deterc_type(bool lower, t_symbol_info *sym, unsigned char type, unsigned char shndx);
 
 #endif
