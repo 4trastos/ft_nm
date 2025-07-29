@@ -17,7 +17,7 @@ void    complete_type(t_symbol_info *sym, t_stack_file *aux,
         if (aux->bits == BITS_32)
         {
             sec_header = &aux->elf32_sh_table[shndx];
-            if (sec_header->sh_name >= aux->strtab_size)
+            if (sec_header->sh_name >= aux->shstrtab_size)
             {
                 sym->char_type = '?';
                 return;
@@ -27,7 +27,7 @@ void    complete_type(t_symbol_info *sym, t_stack_file *aux,
         else
         {
             sect_header = &aux->elf64_sh_table[shndx];
-            if (sect_header->sh_name >= aux->strtab_size)
+            if (sect_header->sh_name >= aux->shstrtab_size)
             {
                 sym->char_type = '?';
                 return;
