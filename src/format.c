@@ -58,7 +58,7 @@ void    fileFormat_id(t_stack_file **sfile, int flag)
                 handle_file_error("./ft_nm", aux->file, errno);
                 flag = 1;    
             }
-            if (!flag)
+            if (flag == 0)
             {
                 success = fstat(fd, &my_file_info);
                 if (success == -1)

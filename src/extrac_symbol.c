@@ -3,19 +3,35 @@
 void    complete_type(t_symbol_info *sym, t_stack_file *aux,
     unsigned char type, unsigned char shndx, bool lower)
 {
-    Elf64_Shdr  *sect_header;
-    char        *sect_name;
+    Elf64_Shdr  *sect_header = NULL;
+    Elf32_Shdr  *sec_header = NULL;   
+    char        *sect_name = NULL;
 
     if (type == STT_OBJECT)
     {
+        if (shndx == 0 || shndx >= aux->elf64_header->e_shnum)
+        {
+            sym->char_type = '?';
+            return;
+        }
         if (aux->bits == BITS_32)
         {
-            sect_header = &aux->elf32_sh_table[shndx];
-            sect_name = (char *)(aux->shstrtab_ptr + sect_header->sh_name);
+            sec_header = &aux->elf32_sh_table[shndx];
+            if (sec_header->sh_name >= aux->strtab_size)
+            {
+                sym->char_type = '?';
+                return;
+            }
+            sect_name = (char *)(aux->shstrtab_ptr + sec_header->sh_name);
         }
         else
         {
             sect_header = &aux->elf64_sh_table[shndx];
+            if (sect_header->sh_name >= aux->strtab_size)
+            {
+                sym->char_type = '?';
+                return;
+            }
             sect_name = (char *)(aux->shstrtab_ptr + sect_header->sh_name);
         }
         if (ft_strcmp(sect_name, ".data") == 0 || ft_strcmp(sect_name, ".data.rel.ro") == 0)
@@ -26,10 +42,10 @@ void    complete_type(t_symbol_info *sym, t_stack_file *aux,
             sym->char_type = 'B';
         else
             sym->char_type = '?';
+        if (lower == true && (sym->char_type == 'D' || sym->char_type == 'R' ||
+            sym->char_type == 'B'))
+            sym->char_type = ft_tolower(sym->char_type);
     }
-    if (lower == true && (sym->char_type == 'D' || sym->char_type == 'R' ||
-        sym->char_type == 'B'))
-        sym->char_type = ft_tolower(sym->char_type);
 }
 
 void    logic_deterc_type(bool lower, t_symbol_info *sym, unsigned char type,
@@ -64,7 +80,7 @@ void    logic_deterc_type(bool lower, t_symbol_info *sym, unsigned char type,
 void    logic_deter_symbol(t_symbol_info *sym, uint16_t shndx,
     unsigned char type, unsigned char bindign)
 {
-    bool    upper = false;
+    //bool    upper = false;
     bool    lower = false;
 
     if (shndx == SHN_ABS || shndx == SHN_COMMON)
@@ -88,9 +104,9 @@ void    logic_deter_symbol(t_symbol_info *sym, uint16_t shndx,
         else
             lower = true;        
     }
-    else if (bindign == STB_GLOBAL)
-        upper = true;
-    logic_deterc_type(&lower, &sym, type, shndx);
+    //else if (bindign == STB_GLOBAL)
+    //    upper = true;
+    logic_deterc_type(lower, sym, type, shndx);
     return;
 }
 
@@ -114,8 +130,6 @@ void    extr_detc_symbol_type(t_stack_file **file)
             {
                 st_info_val = sym->st_info;
                 shndx_val = sym->shndx;
-                symbol_type = 0;
-                symbol_binding = 0;
 
                 if (aux->bits == BITS_32)
                 {

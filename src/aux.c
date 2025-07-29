@@ -30,7 +30,7 @@ void    clear_closing(t_stack_file **sfiles)
                 perror("munmap failed");
         }
         clear_symbol_list(&current->symbol_list);
-        free(current->file);
+        //free(current->file);
         free(current);
         current = next_file;
     }
