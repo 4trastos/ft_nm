@@ -86,6 +86,7 @@ t_symbol_info   *create_symbnode(char *name, uint64_t value, unsigned char st_in
     new->shndx = shndx;
     new->st_info = st_info;
     new->char_type = '\0';
+    new->visible = true;
     new->next = NULL;
     return (new);
 }

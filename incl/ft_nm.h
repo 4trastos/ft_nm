@@ -62,6 +62,7 @@ typedef struct s_symbol_info
     unsigned char           st_info;
     uint64_t                value;
     uint16_t                shndx;
+    bool                    visible;
     struct s_symbol_info    *next;
 }   t_symbol_info;
 
@@ -142,5 +143,7 @@ void            parsing_symbol_ent(t_stack_file **file);
 void            extr_detc_symbol_type(t_stack_file **file);
 void            logic_deter_symbol(t_symbol_info *sym, uint16_t shndx, unsigned char type, unsigned char bindign);
 void            logic_deterc_type(bool lower, t_symbol_info *sym, unsigned char type, unsigned char shndx);
+void            tilter_collecting(t_stack_file **file);
+void            ordering_symbols(t_stack_file **file);
 
 #endif

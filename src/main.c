@@ -73,15 +73,15 @@ int main(int argc, char **argv)
         return(1);
     flag = 0;
     fileFormat_id(&sfile, flag);        // Identifica 32/64 bits y endianness
-    parsing_header(&sfile);             // Mapea la cabecera ELF
-    location_headings(&sfile);          // Mapea la tabla de cabeceras de sección
-    location_names(&sfile);             // Mapea la .shstrtab
-    iterytable(&sfile);                 // Itera las secciones para encontrar .symtab y .strtab
-    parsing_symbol_ent(&sfile);
-    extr_detc_symbol_type(&sfile);
-    //tilter_collecting();
-    //ordering_symbols();
-    //output();
+    parsing_header(&sfile);             // Mapea la cabecera ELF del archivo en RAM
+    location_headings(&sfile);          // Mapea la tabla de cabeceras de sección (SHT)
+    location_names(&sfile);             // Mapea la tabla de nombres de sección (.shstrtab)
+    iterytable(&sfile);                 // Busca y mapea las tablas de símbolos (.symtab) y strings (.strtab)
+    parsing_symbol_ent(&sfile);         // Parsea los símbolos del archivo y los guarda en la lista de símbolos 
+    extr_detc_symbol_type(&sfile);      // Asigna el carácter de tipo (ej., 'T', 'D', 'U') a cada símbolo
+    tilter_collecting(&sfile);          // Filtra símbolos
+    ordering_symbols(&sfile);           // Ordena símbolos alfabéticamente
+    //output();                         // Imprime la salida final de nm
     
     print_stack_files(sfile);
     
