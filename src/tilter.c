@@ -3,7 +3,15 @@
 void    ordering_symbols(t_stack_file **file)
 {
     t_stack_file    *aux;
-    t_symbol_info   *sym;
+
+    aux = *file;
+    while (aux)
+    {
+        if (aux->validity == 1 && aux->elf == 1 && aux->symbol_list != NULL)
+            merge_sort(&aux->symbol_list);
+        aux = aux->next;
+    }
+    
 }
 
 void    tilter_collecting(t_stack_file **file)
