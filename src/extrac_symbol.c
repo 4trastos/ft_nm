@@ -80,7 +80,6 @@ void    logic_deterc_type(bool lower, t_symbol_info *sym, unsigned char type,
 void    logic_deter_symbol(t_symbol_info *sym, uint16_t shndx,
     unsigned char type, unsigned char bindign)
 {
-    //bool    upper = false;
     bool    lower = false;
 
     if (shndx == SHN_ABS || shndx == SHN_COMMON)
@@ -92,20 +91,20 @@ void    logic_deter_symbol(t_symbol_info *sym, uint16_t shndx,
     }
     else if (bindign == STB_WEAK)
     {
-        if (bindign == STB_WEAK && shndx == SHN_UNDEF)
+        if (shndx == SHN_UNDEF)
             sym->char_type = 'w';
         else
             sym->char_type = 'W';
     }
     else if (bindign == STB_LOCAL)
     {
-        if (bindign == STB_LOCAL && shndx == SHN_UNDEF)
+        if (shndx == SHN_UNDEF)
             sym->char_type = 'U';
         else
             lower = true;        
     }
-    //else if (bindign == STB_GLOBAL)
-    //    upper = true;
+    else if (bindign == STB_GLOBAL)
+        lower = false;
     logic_deterc_type(lower, sym, type, shndx);
     return;
 }
@@ -118,7 +117,6 @@ void    extr_detc_symbol_type(t_stack_file **file)
     unsigned char   symbol_type;
     unsigned char   symbol_binding;
     uint16_t        shndx_val;
-    bool            lower;
 
     aux = *file;
     while (aux)
@@ -143,13 +141,13 @@ void    extr_detc_symbol_type(t_stack_file **file)
                 }
                 sym->char_type = '\0';
                 logic_deter_symbol(sym, shndx_val, symbol_type, symbol_binding);
-                if (sym->char_type == '\0')
+                if (sym->char_type == '\0' && symbol_type == STT_OBJECT)
                 {
-                    if (symbol_binding == STB_LOCAL && shndx_val != SHN_UNDEF)
-                        lower = true;
-                    complete_type(sym, aux, symbol_type, shndx_val, lower); 
+                    if (symbol_binding == STB_LOCAL)
+                        complete_type(sym, aux, symbol_type, shndx_val, true);
+                    else
+                        complete_type(sym, aux, symbol_type, shndx_val, false);
                 }
-                lower = false;
                 sym = sym->next;
             }  
         }
