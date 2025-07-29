@@ -39,7 +39,8 @@ void    clear_symbol_list(t_symbol_info **list)
     while (current != NULL)
     {
         next = current->next;
-        free(current->name);
+        if (current->name)
+            free(current->name);
         free(current);
         current = next;
     }
