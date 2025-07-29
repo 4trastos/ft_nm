@@ -145,5 +145,9 @@ void            logic_deter_symbol(t_symbol_info *sym, uint16_t shndx, unsigned 
 void            logic_deterc_type(bool lower, t_symbol_info *sym, unsigned char type, unsigned char shndx);
 void            tilter_collecting(t_stack_file **file);
 void            ordering_symbols(t_stack_file **file);
+void            merge_sort(t_symbol_info **list);
+void            ft_split_list(t_symbol_info *head, t_symbol_info **front, t_symbol_info **back);
+t_symbol_info   *ft_merge(t_symbol_info *a, t_symbol_info *b);
+bool            compare_symbols(t_symbol_info *a, t_symbol_info *b);
 
 #endif

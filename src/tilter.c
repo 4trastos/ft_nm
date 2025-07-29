@@ -1,25 +1,5 @@
 #include "../incl/ft_nm.h"
 
-void    merge_sort(t_symbol_info **list)
-{
-    t_symbol_info *aux;
-
-    aux = *list;
-}
-
-void    ordering_symbols(t_stack_file **file)
-{
-    t_stack_file    *aux;
-
-    aux = *file;
-    while (aux)
-    {
-        if (aux->validity == 1 && aux->elf == 1 && aux->symbol_list != NULL)
-            merge_sort(&aux->symbol_list);
-        aux = aux->next;
-    }
-}
-
 void    tilter_collecting(t_stack_file **file)
 {
     t_stack_file    *aux;
@@ -48,11 +28,11 @@ void    tilter_collecting(t_stack_file **file)
                     sym_binding = ELF64_ST_BIND(sym->st_info);
                 }
                 if (sym_type == STT_SECTION)
-                sym->visible = false;
+                    sym->visible = false;
                 else if (sym_type == STT_NOTYPE && sym_binding == STB_LOCAL && sym->shndx != SHN_UNDEF)
-                sym->visible = false;
+                    sym->visible = false;
                 else if ((!sym->name || sym->name[0] == '\0') && sym->char_type != 'A' && sym->char_type != 'a')
-                sym->visible = false;
+                    sym->visible = false;
 
                 sym = sym->next;
             }
