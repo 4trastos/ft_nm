@@ -2,7 +2,7 @@
 
 void    logic_deterc_type(bool upper, bool lower, t_symbol_info *sym, unsigned char type)
 {
-    if (upper == true)
+    if (lower == true)
     {
         
     }
@@ -87,12 +87,6 @@ void    extr_detc_symbol_type(t_stack_file **file)
                     symbol_bindign = ELF64_ST_BIND(st_info_val);
                 }
                 logic_deter_symbol(&sym, shndx_val, symbol_type, symbol_bindign);
-                // Aquí es donde empieza la lógica para determinar 'char_type'
-                // Esto es complejo y depende de muchas condiciones:
-                // - symbol_binding (STB_LOCAL, STB_GLOBAL, STB_WEAK)
-                // - symbol_type (STT_NOTYPE, STT_OBJECT, STT_FUNC, STT_SECTION, STT_FILE, etc.)
-                // - st_shndx_val (SHN_ABS, SHN_COMMON, SHN_UNDEF)
-                // - El tipo de sección a la que apunta st_shndx_val (SHT_PROGBITS, SHT_NOBITS, SHT_STRTAB, etc.)
                 sym = sym->next;
             }
             
