@@ -11,7 +11,6 @@ void    ordering_symbols(t_stack_file **file)
             merge_sort(&aux->symbol_list);
         aux = aux->next;
     }
-    
 }
 
 void    tilter_collecting(t_stack_file **file)
