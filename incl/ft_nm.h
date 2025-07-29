@@ -149,5 +149,6 @@ void            merge_sort(t_symbol_info **list);
 void            ft_split_list(t_symbol_info *head, t_symbol_info **front, t_symbol_info **back);
 t_symbol_info   *ft_merge(t_symbol_info *a, t_symbol_info *b);
 bool            compare_symbols(t_symbol_info *a, t_symbol_info *b);
+void            output(t_stack_file **file);
 
 #endif
