@@ -1,5 +1,12 @@
 #include "../incl/ft_nm.h"
 
+void    merge_sort(t_symbol_info **list)
+{
+    t_symbol_info *aux;
+
+    aux = *list;
+}
+
 void    ordering_symbols(t_stack_file **file)
 {
     t_stack_file    *aux;
