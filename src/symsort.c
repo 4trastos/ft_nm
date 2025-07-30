@@ -9,8 +9,11 @@ bool    compare_symbols(t_symbol_info *a, t_symbol_info *b)
         return (true);
     else if (name_cmp > 0)
         return (false);
+
+    if (a->value < b->value)
+        return (true);
     else
-        return (a->value < b->value);
+        return (false);
 }
 
 t_symbol_info   *ft_merge(t_symbol_info *a, t_symbol_info *b)
@@ -32,7 +35,23 @@ t_symbol_info   *ft_merge(t_symbol_info *a, t_symbol_info *b)
     else
     {
         result = b;
-        result->next = ft_merge(a, b->next);
+        if (ft_strcmp(a->name, b->name) == 0 && a->value == b->value)
+            result = a;
+        
+        t_symbol_info *next_a;
+        t_symbol_info *next_b;
+
+        if (result == a)
+            next_a = a->next;
+        else
+            next_a = a;
+
+        if (result == b)
+            next_b = b->next;
+        else
+            next_b = b;
+
+        result->next = ft_merge(next_a, next_b);
     }
     return (result);
 }
