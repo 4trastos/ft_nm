@@ -3,16 +3,17 @@
 char    assign_type_from_section(char *name, uint64_t flags, bool lower)
 {
     if (ft_strcmp(name, ".text") == 0 || (flags & SHF_EXECINSTR))
-        return (lower ? 't' : 'T');
-    if (ft_strcmp(name, ".data") == 0 || ft_strcmp(name, ".got") == 0 || (flags & SHF_WRITE))
-        return (lower ? 'd' : 'D');
-    if (ft_strcmp(name, ".rodata") == 0 || (flags & SHF_MERGE) || ((flags & SHF_ALLOC) && !(flags & SHF_WRITE)))
-        return (lower ? 'r' : 'R');
+        return ((lower) ? 't' : 'T');
     if (ft_strcmp(name, ".bss") == 0 || ft_strcmp(name, ".tbss") == 0)
-        return (lower ? 'b' : 'B');
+        return ((lower) ? 'b' : 'B');
     if (flags & SHF_TLS)
-        return (lower ? 'g' : 'G');
-    return (lower ? '?' : '?'); // Si llega aquí, es un caso no cubierto.
+        return ((lower) ? 'g' : 'G');
+    if (ft_strcmp(name, ".data") == 0 || ft_strcmp(name, ".got") == 0 || 
+        ft_strcmp(name, ".data.rel.ro") == 0 || (flags & SHF_WRITE))
+        return ((lower) ? 'd' : 'D');
+    if (ft_strcmp(name, ".rodata") == 0 || (flags & SHF_MERGE) || ((flags & SHF_ALLOC) && !(flags & SHF_WRITE)))
+        return ((lower) ? 'r' : 'R');
+    return ((lower) ? '?' : '?'); // Si llega aquí, es un caso no cubierto.
 }
 
 void    analyze_section(t_symbol_info *sym, t_stack_file *aux, uint8_t bind, uint16_t shndx)
