@@ -27,7 +27,7 @@ void    tilter_collecting(t_stack_file **file)
                     sym_type = ELF64_ST_TYPE(sym->st_info);
                     sym_binding = ELF64_ST_BIND(sym->st_info);
                 }
-                if (sym_type == STT_SECTION)
+                if (sym_type == STT_SECTION || sym_type == STT_FILE)
                     sym->visible = false;
                 else if (sym_type == STT_NOTYPE && sym_binding == STB_LOCAL && sym->shndx != SHN_UNDEF)
                     sym->visible = false;
