@@ -1,12 +1,41 @@
 #include "../incl/ft_nm.h"
 
-int ignore_underscores(char *s1, char *s2)
+int stripped_char(char c)
 {
-    while (*s1 == '_')
-        s1++;
-    while ( *s2 == '_')
-        s2++;
-    return (ft_strcmp(s1, s2));
+    if (c >= 'A' && c <= 'Z')
+        c = c + ('a' - 'A');
+    return (c);
+}
+
+int ignore_underscores(char *a, char *b)
+{
+    int x;
+    int y;
+
+    while (*a == '_')
+        a++;
+    while (*b == '_')
+        b++;
+
+    while (*a && *b)
+    {
+        x = stripped_char(*a);
+        y = stripped_char(*b);
+
+        if (x < y)
+            return (-1);
+        else if (x > y)
+            return (1);
+        
+        a++;
+        b++;
+    }
+    
+    if (*a)
+        return (1);
+    if (*b)
+        return (-1);
+    return (0);
 }
 
 void    tilter_collecting(t_stack_file **file)

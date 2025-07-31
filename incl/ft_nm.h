@@ -150,6 +150,7 @@ void            ft_split_list(t_symbol_info *head, t_symbol_info **front, t_symb
 t_symbol_info   *ft_merge(t_symbol_info *a, t_symbol_info *b);
 bool            compare_symbols(t_symbol_info *a, t_symbol_info *b);
 void            ft_output(t_stack_file **file, int argc);
-int             ignore_underscores(char *s1, char *s2);
+int             ignore_underscores(char *a, char *b);
+int             stripped_char(char c);
 
 #endif

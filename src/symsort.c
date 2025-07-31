@@ -1,27 +1,15 @@
 #include "../incl/ft_nm.h"
 
-bool    compare_symbols(t_symbol_info *a, t_symbol_info *b)
+bool compare_symbols(t_symbol_info *a, t_symbol_info *b)
 {
-    int name_cmp;
-    int name_ignor;
+    int cmp = ignore_underscores(a->name, b->name);
 
-    name_ignor = ignore_underscores(a->name, b->name);
-    if (name_ignor < 0)
+    if (cmp < 0)
         return (true);
-    else if (name_ignor > 0)
+    if (cmp > 0)
         return (false);
 
-    name_cmp = ft_strcmp(a->name, b->name);
-    if (name_cmp < 0)
-        return (true);
-    else if (name_cmp > 0)
-        return (false);
-    
-    if (a->value < b->value)
-        return (true);
-    else if (a->value > b->value)
-        return (false);
-    return (true);
+    return (a->value < b->value);
 }
 
 t_symbol_info   *ft_merge(t_symbol_info *a, t_symbol_info *b)
