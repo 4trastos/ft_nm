@@ -69,7 +69,7 @@ void    fileFormat_id(t_stack_file **sfile, int flag)
                     if (elf == MAP_FAILED)
                         handle_file_error("mmap failed:", aux->file, errno);
                     else if (my_file_info.st_size < 4 || elf[0] != 0x7F || elf[1] != 'E' || elf[2] != 'L' || elf[3] != 'F')
-                        handle_file_error_two("./ft_nm", aux->file, "file format not recognized");
+                        aux->elf = 0;
                     else
                     {
                         aux->elf = 1;

@@ -38,6 +38,8 @@ void    ft_output(t_stack_file **file, int argc)
             }
             symb = symb->next;
         }
+        if (aux->validity  == 1 && aux->elf == 0)
+            handle_file_error_two("./ft_nm", aux->file, "file format not recognized");
         aux = aux->next;
     }
 }
