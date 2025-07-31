@@ -155,5 +155,6 @@ void            ft_output(t_stack_file **file, int argc);
 int             ignore_underscores(char *a, char *b);
 int             stripped_char(char c);
 int             compare_symbol_names(t_symbol_info *a, t_symbol_info *b);
+int             get_type_sort_priority(char type_char);
 
 #endif

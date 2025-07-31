@@ -2,44 +2,30 @@
 
 bool compare_symbols(t_symbol_info *a, t_symbol_info *b)
 {
-    int         cmp = ignore_underscores(a->name, b->name);
-    const char  *type_order;
-    char        *positt_a;
-    char        *positt_b;
-
-    if (cmp != 0)
-        return (cmp < 0);
+    int primary_name_cmp;
+    int full_name_cmp;
     
-    if (a->char_type != 'U' && b->char_type == 'U')
-		return (true);
-	if (a->char_type == 'U' && b->char_type != 'U')
-		return (false);
-    
-    if (a->char_type != b->char_type)
-    {
-        type_order = "AaBbCcDdGgIiNnRrSsTtUuVvWw?";
-        positt_a = ft_strchr((char *)type_order, a->char_type);
-        positt_b = ft_strchr((char *)type_order, b->char_type);
+    primary_name_cmp = ignore_underscores(a->name, b->name);
+    if (primary_name_cmp != 0)
+        return (primary_name_cmp < 0);
 
-        if (positt_a && positt_b)
-            return (positt_a < positt_b);
-        if (positt_a)
-            return (true);
-        return (false);
+    full_name_cmp = ft_strcmp(a->name, b->name); 
+    if (full_name_cmp != 0)
+        return (full_name_cmp < 0);
+
+    if (a->value != b->value) {
+        return (a->value < b->value);
+    }
+
+    int type_priority_a = get_type_sort_priority(a->char_type);
+    int type_priority_b = get_type_sort_priority(b->char_type);
+
+    if (type_priority_a != type_priority_b) {
+        return (type_priority_a < type_priority_b);
     }
     
-    //  if (a->char_type != b->char_type)
-    //  {
-    //     // Los tipos mayúsculas (globales) van antes que minúsculas (locales)
-    //     bool a_upper = is_upper(a->char_type);
-    //     bool b_upper = is_upper(b->char_type);
-        
-    //     if (a_upper && !b_upper) return true;
-    //     if (!a_upper && b_upper) return false;
-    //     return (a->char_type < b->char_type);
-    // }
-
-    return (a->value < b->value);
+    // Si todo es idéntico, mantener el orden original
+    return (true);
 }
 
 t_symbol_info   *ft_merge(t_symbol_info *a, t_symbol_info *b)
