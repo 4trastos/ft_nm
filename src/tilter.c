@@ -1,5 +1,14 @@
 #include "../incl/ft_nm.h"
 
+int ignore_underscores(char *s1, char *s2)
+{
+    while (*s1 == '_')
+        s1++;
+    while ( *s2 == '_')
+        s2++;
+    return (ft_strcmp(s1, s2));
+}
+
 void    tilter_collecting(t_stack_file **file)
 {
     t_stack_file    *aux;

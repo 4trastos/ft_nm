@@ -3,25 +3,29 @@
 bool    compare_symbols(t_symbol_info *a, t_symbol_info *b)
 {
     int name_cmp;
+    int name_ignor;
+
+    name_ignor = ignore_underscores(a->name, b->name);
+    if (name_ignor < 0)
+        return (true);
+    else if (name_ignor > 0)
+        return (false);
 
     name_cmp = ft_strcmp(a->name, b->name);
     if (name_cmp < 0)
         return (true);
     else if (name_cmp > 0)
         return (false);
-
+    
     if (a->value < b->value)
         return (true);
-    else
+    else if (a->value > b->value)
         return (false);
+    return (true);
 }
 
 t_symbol_info   *ft_merge(t_symbol_info *a, t_symbol_info *b)
 {
-    t_symbol_info *result;
-
-    result = NULL;
-
     if (a == NULL)
         return (b);
     if (b == NULL)
@@ -29,31 +33,14 @@ t_symbol_info   *ft_merge(t_symbol_info *a, t_symbol_info *b)
     
     if (compare_symbols(a, b))
     {
-        result = a;
-        result->next = ft_merge(a->next, b);
+        a->next = ft_merge(a->next, b);
+        return (a);
     }
     else
     {
-        result = b;
-        if (ft_strcmp(a->name, b->name) == 0 && a->value == b->value)
-            result = a;
-        
-        t_symbol_info *next_a;
-        t_symbol_info *next_b;
-
-        if (result == a)
-            next_a = a->next;
-        else
-            next_a = a;
-
-        if (result == b)
-            next_b = b->next;
-        else
-            next_b = b;
-
-        result->next = ft_merge(next_a, next_b);
+        b->next = ft_merge(a, b->next);
+        return (b);
     }
-    return (result);
 }
 
 void    ft_split_list(t_symbol_info *head, t_symbol_info **front, t_symbol_info **back)

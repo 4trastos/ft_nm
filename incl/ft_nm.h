@@ -143,8 +143,6 @@ void            extr_detc_symbol_type(t_stack_file **file);
 void            determine_symbol_type(t_symbol_info *sym, t_stack_file *aux, uint8_t type, uint8_t bind, uint16_t shndx);
 char            assign_type_from_section(char *name, uint64_t flags, bool lower);
 void            analyze_section(t_symbol_info *sym, t_stack_file *aux, uint8_t bind, uint16_t shndx);
-//void            logic_deter_symbol(t_symbol_info *sym, uint16_t shndx, unsigned char type, unsigned char binding);
-//void            logic_deterc_type(bool lower, t_symbol_info *sym, unsigned char type, unsigned char shndx);
 void            tilter_collecting(t_stack_file **file);
 void            ordering_symbols(t_stack_file **file);
 void            merge_sort(t_symbol_info **list);
@@ -152,5 +150,6 @@ void            ft_split_list(t_symbol_info *head, t_symbol_info **front, t_symb
 t_symbol_info   *ft_merge(t_symbol_info *a, t_symbol_info *b);
 bool            compare_symbols(t_symbol_info *a, t_symbol_info *b);
 void            ft_output(t_stack_file **file, int argc);
+int             ignore_underscores(char *s1, char *s2);
 
 #endif
