@@ -120,6 +120,8 @@ size_t          ft_strlen(char *str);
 char            *get_symbol_name(uint32_t offset_name, void *strtab_ptr, size_t strtab_size);
 char            ft_tolower(char c);
 const char      *get_section_name(uint32_t offset_name, void *shstrtab_ptr, size_t shstrtab_size);
+bool            is_alphanum(char c);
+char	        *ft_strchr(char *s, int c);
 
 //*** struct functions ***
 
@@ -152,5 +154,6 @@ bool            compare_symbols(t_symbol_info *a, t_symbol_info *b);
 void            ft_output(t_stack_file **file, int argc);
 int             ignore_underscores(char *a, char *b);
 int             stripped_char(char c);
+int             compare_symbol_names(t_symbol_info *a, t_symbol_info *b);
 
 #endif

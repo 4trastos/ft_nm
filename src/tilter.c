@@ -1,7 +1,16 @@
 #include "../incl/ft_nm.h"
 
+bool is_alphanum(char c)
+{
+    return (c >= 'a' && c <= 'z') ||
+           (c >= 'A' && c <= 'Z') ||
+           (c >= '0' && c <= '9');
+}
+
 int stripped_char(char c)
 {
+    if (c == '@')
+        return (64);
     if (c >= 'A' && c <= 'Z')
         c = c + ('a' - 'A');
     return (c);
@@ -22,11 +31,8 @@ int ignore_underscores(char *a, char *b)
         x = stripped_char(*a);
         y = stripped_char(*b);
 
-        if (x < y)
-            return (-1);
-        else if (x > y)
-            return (1);
-        
+        if (x != y)
+            return (x - y);
         a++;
         b++;
     }

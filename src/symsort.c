@@ -2,12 +2,42 @@
 
 bool compare_symbols(t_symbol_info *a, t_symbol_info *b)
 {
-    int cmp = ignore_underscores(a->name, b->name);
+    int         cmp = ignore_underscores(a->name, b->name);
+    const char  *type_order;
+    char        *positt_a;
+    char        *positt_b;
 
-    if (cmp < 0)
-        return (true);
-    if (cmp > 0)
+    if (cmp != 0)
+        return (cmp < 0);
+    
+    if (a->char_type != 'U' && b->char_type == 'U')
+		return (true);
+	if (a->char_type == 'U' && b->char_type != 'U')
+		return (false);
+    
+    if (a->char_type != b->char_type)
+    {
+        type_order = "AaBbCcDdGgIiNnRrSsTtUuVvWw?";
+        positt_a = ft_strchr((char *)type_order, a->char_type);
+        positt_b = ft_strchr((char *)type_order, b->char_type);
+
+        if (positt_a && positt_b)
+            return (positt_a < positt_b);
+        if (positt_a)
+            return (true);
         return (false);
+    }
+    
+    //  if (a->char_type != b->char_type)
+    //  {
+    //     // Los tipos mayúsculas (globales) van antes que minúsculas (locales)
+    //     bool a_upper = is_upper(a->char_type);
+    //     bool b_upper = is_upper(b->char_type);
+        
+    //     if (a_upper && !b_upper) return true;
+    //     if (!a_upper && b_upper) return false;
+    //     return (a->char_type < b->char_type);
+    // }
 
     return (a->value < b->value);
 }

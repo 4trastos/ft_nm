@@ -1,5 +1,23 @@
 #include "../incl/ft_nm.h"
 
+char	*ft_strchr(char *s, int c)
+{
+	int	i;
+
+	i = 0;
+	while (s[i] != '\0')
+	{
+		if (s[i] == '\\')
+			return (NULL);
+		if (s[i] == (unsigned char)c)
+			return ((char *)&s[i]);
+		i++;
+	}
+	if ((char)c == '\0')
+		return ((char *)&s[i]);
+	return (NULL);
+}
+
 size_t  ft_strlen(char *str)
 {
     size_t  i;
