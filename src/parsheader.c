@@ -30,7 +30,7 @@ void    location_names(t_stack_file **files)
             }
             if (sh_offset >= aux->file_size || (sh_offset + sh_size) > aux->file_size || sh_size == 0)
             {
-                handle_file_error_two("./ft_nm", aux->file, "Error: Invalid .shstrtab section offset or size");
+                save_file_error(aux, "Error: Invalid .shstrtab section offset or size");
                 aux->validity = 0;
             }
             else
@@ -73,7 +73,7 @@ void    location_headings(t_stack_file **files) //Localizar Tabla de Cabeceras d
             if (sh_num == 0 || sh_entsize == 0 || sh_offset == 0 || sh_offset >= aux->file_size ||
                 (sh_offset + sh_num * sh_entsize) > aux->file_size)
             {
-                handle_file_error_two("./ft_nm", aux->file, "Error: Section headers on ELF file");
+                save_file_error(aux, "Error: Section headers on ELF file");
                 aux->validity = 0;
             }
             if (aux->validity)

@@ -4,7 +4,6 @@ void    ft_output(t_stack_file **file, int argc)
 {
     t_stack_file    *aux;
     t_symbol_info   *symb;
-    bool            is_undefined;
 
     aux = *file;
     while (aux)
@@ -12,33 +11,44 @@ void    ft_output(t_stack_file **file, int argc)
         if (aux->validity == 1 && aux->elf == 1)
         {
             if (argc > 2)
-                printf("\n %s \n", aux->file);
+            {
+                putstr_stderr("\n");
+                putstr_stderr(aux->file);
+                putstr_stderr(":\n");
+            }
         }
         symb = aux->symbol_list;
         while (symb)
         {
             if (symb->visible)
             {
-                is_undefined = (symb->shndx == SHN_UNDEF);
-                if (aux->bits == BITS_64)
-                {
-                    if (is_undefined)
-                        printf("%16s", "");
-                    else
-                        printf("%016lx", symb->value);
-                }
+                if (symb->shndx == SHN_UNDEF)
+                    {
+                        if (aux->bits == BITS_64)
+                            write(1, "                ", 16);
+                        else
+                            write(1, "        ", 8);
+                    }
                 else
                 {
-                    if (is_undefined)
-                        printf("%8s", "");
-                    else
-                        printf("%08lx", symb->value);
+                    ft_puthex(symb->value, (aux->bits == BITS_64) ? 16 : 8);
                 }
-                printf(" %c %s\n", symb->char_type, symb->name);
+                write(1, " ", 1);
+                write(1, &symb->char_type, 1);
+                write(1, " ", 1);
+                putstr_stderr(symb->name);
+                write(1, "\n", 1);
             }
             symb = symb->next;
         }
-        if (aux->validity  == 1 && aux->elf == 0)
+        aux = aux->next;
+    }
+    aux = *file;
+    while (aux)
+    {
+        if (!aux->validity)
+            handle_file_error_two("./ft_nm", aux->file, aux->error_msg);
+        else if (!aux->elf)
             handle_file_error_two("./ft_nm", aux->file, "file format not recognized");
         aux = aux->next;
     }

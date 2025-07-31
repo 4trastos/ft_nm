@@ -69,6 +69,7 @@ typedef struct s_symbol_info
 typedef struct s_stack_file
 {
     char                    *file;
+    char                    *error_msg;
     int                     validity;
     int                     position;
     int                     elf;
@@ -122,6 +123,8 @@ char            ft_tolower(char c);
 const char      *get_section_name(uint32_t offset_name, void *shstrtab_ptr, size_t shstrtab_size);
 bool            is_alphanum(char c);
 char	        *ft_strchr(char *s, int c);
+void            save_file_error(t_stack_file *file, char *msg);
+void            ft_puthex(unsigned long n, int width);
 
 //*** struct functions ***
 

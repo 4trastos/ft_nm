@@ -55,19 +55,25 @@ void    fileFormat_id(t_stack_file **sfile, int flag)
             fd = open(aux->file, O_RDONLY);
             if (fd == -1)
             {
-                handle_file_error("./ft_nm", aux->file, errno);
+                save_file_error(aux, strerror(errno));
                 flag = 1;    
             }
             if (flag == 0)
             {
                 success = fstat(fd, &my_file_info);
                 if (success == -1)
-                    handle_file_error("./ft_nm", aux->file, errno);
+                {
+                    save_file_error(aux, strerror(errno));
+                    aux->validity = 0;
+                }
                 else
                 {
                     elf = mmap(NULL, my_file_info.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
                     if (elf == MAP_FAILED)
-                        handle_file_error("mmap failed:", aux->file, errno);
+                    {
+                        save_file_error(aux, strerror(errno));
+                        aux->validity = 0;
+                    }
                     else if (my_file_info.st_size < 4 || elf[0] != 0x7F || elf[1] != 'E' || elf[2] != 'L' || elf[3] != 'F')
                         aux->elf = 0;
                     else

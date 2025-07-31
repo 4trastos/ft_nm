@@ -30,7 +30,6 @@ void    clear_closing(t_stack_file **sfiles)
                 perror("munmap failed");
         }
         clear_symbol_list(&current->symbol_list);
-        //free(current->file);
         free(current);
         current = next_file;
     }
@@ -45,31 +44,28 @@ void    putstr_stderr(char *str)
         write(2, &str[i], 1);
         i++;
     }
-    return;
 }
 
 void    handle_file_error(char *program_name, char *file_name, int errnum)
 {
     putstr_stderr(program_name);
-    putstr_stderr(": ");
+    putstr_stderr(": '");
 
     putstr_stderr(file_name);
-    putstr_stderr(": ");
+    putstr_stderr("': ");
 
     putstr_stderr(strerror(errnum));
-    putstr_stderr("\n");
-    return;
+    write(2, "\n", 1);
 }
 
 void    handle_file_error_two(char *program_name, char *file_name, char *str)
 {
     putstr_stderr(program_name);
-    putstr_stderr(": ");
+    putstr_stderr(": '");
 
     putstr_stderr(file_name);
-    putstr_stderr(": ");
+    putstr_stderr("': ");
 
     putstr_stderr(str);
-    putstr_stderr("\n");
-    return;
+    write(2, "\n", 1);
 }

@@ -86,7 +86,7 @@ void    iterytable(t_stack_file **file)
             }
             if (!aux->shstrtab_ptr || !aux->symtab_link)
             {
-                handle_file_error_two("./ft_nm", aux->file, "no symbols");
+                save_file_error(aux, "no symbols");
                 aux->validity = 0;
             }
         }
