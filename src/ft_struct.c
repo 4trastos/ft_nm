@@ -50,8 +50,12 @@ t_stack_file    *create_node(char *str, int pos, int status)
     new->file_content_ptr = NULL;
     new->bits = 0;
     new->endianness = 0;
-    if (new->validity == 0)
+    if (status == -1)
         save_file_error(new, "No such file or directory");
+    else if (status == -2)
+        save_file_error(new, "Is a directory");
+    else if (status == -3)
+        save_file_error(new, "Cannot stat file");
     else
         new->error_msg = NULL;
     return (new);

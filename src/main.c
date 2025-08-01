@@ -1,6 +1,6 @@
 #include "../incl/ft_nm.h"
 
-int     checkarg(char *file_name, char *program_name)
+int     checkarg(char *file_name)
 {
     struct stat my_file_info;
     int         fd;
@@ -10,36 +10,31 @@ int     checkarg(char *file_name, char *program_name)
         return (1);
     fd = open(file_name, O_RDONLY);
     if (fd == -1)
-        return (0);
+        return (errno == EISDIR ? -2 : -1);
     success = fstat(fd, &my_file_info); //(file status) Llamada al sistema POSIX para obtener los metadatos de un archivo.
     if (success == -1)
     {
-        handle_file_error(program_name, file_name, errno);
         close(fd);
-        return (0);
+        return (-3);
     }
     if (S_ISDIR(my_file_info.st_mode))
     {
-        putstr_stderr(program_name);
-        putstr_stderr(": warning: ");
-        putstr_stderr(file_name);
-        putstr_stderr(": is a directory\n");
         close(fd);
-        return (0);
+        return (-2);
     }
     
     close(fd);
     return (1);
 }
 
-void    create_list(t_stack_file **sfile, char **str, int *flag, char *program_name)
+void    create_list(t_stack_file **sfile, char **str, int *flag)
 {
     int i = 0;
     int validity = 1;
 
     while (str[i] != NULL)
     {   
-        validity = checkarg(str[i], program_name);
+        validity = checkarg(str[i]);
         if (!validity)
             *flag += 1;
         stack_node(sfile, create_node(str[i], i, validity));
@@ -53,11 +48,9 @@ int main(int argc, char **argv)
 {
     t_stack_file    *sfile;
     int             flag;
-    char            *program_name_str;
 
     sfile = NULL;
     flag = 0;
-    program_name_str = argv[0];
     if (argc == 1)
     {
         putstr_stderr("ft_nm: a.out: No such file\n");
@@ -65,7 +58,7 @@ int main(int argc, char **argv)
     }
     init_host_endianness();
     argv++;
-    create_list(&sfile, argv, &flag, program_name_str);
+    create_list(&sfile, argv, &flag);
     //if (flag && argc == 2)
     //    return(1);
     flag = 0;
