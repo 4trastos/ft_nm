@@ -180,4 +180,108 @@ for file in $TEST_FILES; do
 done
 ```
 
-¡Con esto tu proyecto **resistirá cualquier corrección**!. 🚀
+
+# Aquí tienes los comandos para **generar los objetos de prueba** (32-bit y 64-bit) y cómo validarlos:
+
+---
+
+### 🔧 **Generación de Objetos de Prueba**
+
+#### 1. **Objeto estático 32-bit (`obj32.o`)**:
+```bash
+echo -e '#include <stdio.h>\nvoid func32(){printf("32-bit\\n");}' > test32.c
+gcc -m32 -c test32.c -o obj32.o
+```
+
+#### 2. **Objeto dinámico 64-bit (`obj64.o`)**:
+```bash
+echo -e '#include <stdio.h>\nvoid func64(){printf("64-bit\\n");}' > test64.c
+gcc -c test64.c -o obj64.o
+```
+
+#### 3. **Verificación de los objetos**:
+```bash
+file obj32.o  # Debe mostrar: ELF 32-bit LSB relocatable
+file obj64.o  # Debe mostrar: ELF 64-bit LSB relocatable
+```
+
+---
+
+### 🧪 **Pruebas con `ft_nm` vs `nm`**
+
+#### 1. **Comparación para 32-bit**:
+```bash
+ft_nm obj32.o > ft_nm_output.txt
+nm obj32.o > nm_output.txt
+diff ft_nm_output.txt nm_output.txt
+```
+
+#### 2. **Comparación para 64-bit**:
+```bash
+ft_nm obj64.o > ft_nm_output.txt
+nm obj64.o > nm_output.txt
+diff ft_nm_output.txt nm_output.txt
+```
+
+#### 3. **Comparación directa (usando proceso sustitución)**:
+```bash
+diff <(ft_nm obj64.o) <(nm obj64.o)
+```
+
+---
+
+### 💣 **Casos Adicionales para Robustez**
+
+#### 1. **Objeto con símbolos complejos**:
+```bash
+echo -e 'int global; static int local; void unused(){}' > complex.c
+gcc -c complex.c -o complex.o
+ft_nm complex.o
+```
+
+#### 2. **Objeto sin símbolos**:
+```bash
+echo 'int main(){return 0;}' > minimal.c
+gcc -c minimal.c -o minimal.o
+ft_nm minimal.o
+```
+
+#### 3. **Archivo ELF corrupto** (para test de errores):
+```bash
+head -c 100 /bin/ls > fake.o
+ft_nm fake.o  # Debe mostrar error claro
+```
+
+---
+
+### 📌 **Notas Clave**:
+1. **Dependencias**:
+   - Necesitas `gcc` y soporte para 32-bit (`gcc-multilib` en Ubuntu).
+   - Instálalo con:
+     ```bash
+     sudo apt install gcc-multilib  # Para Linux
+     ```
+
+2. **Si falla la compilación 32-bit**:
+   - Asegúrate de tener las librerías necesarias:
+     ```bash
+     sudo apt install libc6-dev-i386
+     ```
+
+3. **Para pruebas exhaustivas**:
+   - Usa el script de comparación masiva:
+     ```bash
+     for obj in *.o; do
+         echo "Testing $obj..."
+         diff <(ft_nm "$obj") <(nm "$obj")
+     done
+     ```
+
+---
+
+### 🔍 **¿Qué debes verificar en la salida?**
+1. **Formato idéntico** (direcciones, tipos, nombres).
+2. **Orden idéntico** de símbolos.
+3. **Mismos errores** en casos inválidos.
+
+¡Con estos objetos podrás demostrar que tu `ft_nm` es **tan robusto como el original**! 🚀
