@@ -8,12 +8,9 @@ int     checkarg(char *file_name, char *program_name)
     
     if (findflags(file_name))
         return (1);
-    fd = open(file_name, O_RDONLY); // Si se puede abrir y si se puede leer
+    fd = open(file_name, O_RDONLY);
     if (fd == -1)
-    {
-        handle_file_error(program_name, file_name, errno);
         return (0);
-    }
     success = fstat(fd, &my_file_info); //(file status) Llamada al sistema POSIX para obtener los metadatos de un archivo.
     if (success == -1)
     {
@@ -69,8 +66,8 @@ int main(int argc, char **argv)
     init_host_endianness();
     argv++;
     create_list(&sfile, argv, &flag, program_name_str);
-    if (flag && argc == 2)
-        return(1);
+    //if (flag && argc == 2)
+    //    return(1);
     flag = 0;
     fileFormat_id(&sfile, flag);        // Identifica 32/64 bits y endianness
     parsing_header(&sfile);             // Mapea la cabecera ELF del archivo en RAM
@@ -81,10 +78,9 @@ int main(int argc, char **argv)
     extr_detc_symbol_type(&sfile);      // Asigna el carácter de tipo (ej., 'T', 'D', 'U') a cada símbolo
     tilter_collecting(&sfile);          // Filtra símbolos
     ordering_symbols(&sfile);           // Ordena símbolos alfabéticamente
+    ft_output(&sfile, argc);            // Imprime la salida final de nm
     
     //print_stack_files(sfile);
-    
-    ft_output(&sfile, argc);            // Imprime la salida final de nm
     
     clear_closing(&sfile);
     
