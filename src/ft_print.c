@@ -37,6 +37,7 @@ void print_stack_files(t_stack_file *sfile)
         printf("\n  Architecture Class: %d", current->bits);
         printf("\n  Size: %zu", current->file_size);
         printf("\n  Pointer in RAM: %p", current->file_content_ptr);
+        printf("\n  Error Message: %s", current->error_msg);
         
         // Imprimir la endianness del archivo de forma más legible
         printf("\n  File Endianness: %s",

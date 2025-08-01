@@ -4,6 +4,10 @@ void    ft_output(t_stack_file **file, int argc)
 {
     t_stack_file    *aux;
     t_symbol_info   *symb;
+    const char      *hex_chars = "0123456789abcdef";
+    char            hex_buffer[16]; // Para almacenar dígitos hexadecimales (64-bit)
+    int             i;
+    uint64_t        temp_value;
 
     aux = *file;
     while (aux)
@@ -12,44 +16,48 @@ void    ft_output(t_stack_file **file, int argc)
         {
             if (argc > 2)
             {
-                putstr_stderr("\n");
-                putstr_stderr(aux->file);
-                putstr_stderr(":\n");
-            }
-        }
-        symb = aux->symbol_list;
-        while (symb)
-        {
-            if (symb->visible)
-            {
-                if (symb->shndx == SHN_UNDEF)
-                    {
-                        if (aux->bits == BITS_64)
-                            write(1, "                ", 16);
-                        else
-                            write(1, "        ", 8);
-                    }
-                else
-                {
-                    ft_puthex(symb->value, (aux->bits == BITS_64) ? 16 : 8);
-                }
-                write(1, " ", 1);
-                write(1, &symb->char_type, 1);
-                write(1, " ", 1);
-                putstr_stderr(symb->name);
                 write(1, "\n", 1);
+                write(1, aux->file, ft_strlen(aux->file));
+                write(1, ":\n", 2);
             }
-            symb = symb->next;
+            symb = aux->symbol_list;
+            while (symb)
+            {
+                if (symb->visible)
+                {
+                    if (symb->shndx == SHN_UNDEF)
+                    {
+                        write(1, (aux->bits == BITS_64) ? "                " : "        ", 
+                              (aux->bits == BITS_64) ? 16 : 8);
+                    }
+                    else
+                    {
+                        // Convertir valor a hexadecimal manualmente
+                        int width = (aux->bits == BITS_64) ? 16 : 8;
+                        temp_value = symb->value;
+                        
+                        // Llenar el buffer de derecha a izquierda
+                        i = width;
+                        while (i-- > 0)
+                        {
+                            hex_buffer[i] = hex_chars[temp_value & 0xF];
+                            temp_value >>= 4;
+                        }
+                        write(1, hex_buffer, width);
+                    }
+                    write(1, " ", 1);
+                    write(1, &symb->char_type, 1);
+                    write(1, " ", 1);
+                    write(1, symb->name, ft_strlen(symb->name));
+                    write(1, "\n", 1);
+                }
+                symb = symb->next;
+            }
         }
-        aux = aux->next;
-    }
-    aux = *file;
-    while (aux)
-    {
-        if (!aux->validity)
-            handle_file_error_two("./ft_nm", aux->file, aux->error_msg);
-        else if (!aux->elf)
+        else if (aux->validity == 1 && aux->elf == 0)
             handle_file_error_two("./ft_nm", aux->file, "file format not recognized");
+        else
+            handle_file_error_two("./ft_nm", aux->file, aux->error_msg);
         aux = aux->next;
     }
 }

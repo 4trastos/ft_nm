@@ -19,6 +19,9 @@ void    clear_closing(t_stack_file **sfiles)
 {
     t_stack_file    *current;
     t_stack_file    *next_file;
+
+    if (!sfiles || !*sfiles)
+        return;
     
     current = *sfiles;
     while (current != NULL)
@@ -30,6 +33,7 @@ void    clear_closing(t_stack_file **sfiles)
                 perror("munmap failed");
         }
         clear_symbol_list(&current->symbol_list);
+        free(current->error_msg);
         free(current);
         current = next_file;
     }

@@ -53,6 +53,9 @@ void    clear_symbol_list(t_symbol_info **list)
     t_symbol_info   *current;
     t_symbol_info   *next;
 
+    if (!list ||!*list)
+        return;
+
     current = *list;
     while (current != NULL)
     {
