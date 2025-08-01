@@ -59,8 +59,6 @@ int main(int argc, char **argv)
     init_host_endianness();
     argv++;
     create_list(&sfile, argv, &flag);
-    //if (flag && argc == 2)
-    //    return(1);
     flag = 0;
     fileFormat_id(&sfile, flag);        // Identifica 32/64 bits y endianness
     parsing_header(&sfile);             // Mapea la cabecera ELF del archivo en RAM
@@ -72,8 +70,6 @@ int main(int argc, char **argv)
     tilter_collecting(&sfile);          // Filtra símbolos
     ordering_symbols(&sfile);           // Ordena símbolos alfabéticamente
     ft_output(&sfile, argc);            // Imprime la salida final de nm
-    
-    //print_stack_files(sfile);
     
     clear_closing(&sfile);
     
