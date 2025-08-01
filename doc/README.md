@@ -1,4 +1,4 @@
-**listado exhaustivo de pruebas** para tu `ft_nm` (proyecto de 42 Outer Core) 
+## **listado exhaustivo de pruebas** para tu `ft_nm` (proyecto de 42 Outer Core) 
 que cubra todos los casos críticos y edge cases. El objetivo es demostrar que se comporta 
 
 **exactamente como el `nm` original** y es **robusto frente a intentos de "romperlo"**. 
@@ -180,8 +180,9 @@ for file in $TEST_FILES; do
 done
 ```
 
+---
 
-# Aquí tienes los comandos para **generar los objetos de prueba** (32-bit y 64-bit) y cómo validarlos:
+## Aquí tienes los comandos para **generar los objetos de prueba** (32-bit y 64-bit) y cómo validarlos:
 
 ---
 
