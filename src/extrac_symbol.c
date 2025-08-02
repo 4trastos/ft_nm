@@ -49,10 +49,7 @@ void    determine_symbol_type(t_symbol_info *sym, t_stack_file *aux, uint8_t typ
     if (shndx == SHN_UNDEF)
     {
         if (bind == STB_WEAK)
-        {
-            //sym->char_type = (lower) ? 'w' : 'W';
             sym->char_type = (type == STT_OBJECT) ? 'v' : 'w';
-        }
         else
             sym->char_type = 'U';
         return;

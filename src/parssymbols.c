@@ -29,9 +29,9 @@ void    parsing_symbol_ent(t_stack_file **file)
                 {
                     Elf32_Sym *sym = &sym_table_ptr[i];
 
-                    uint32_t st_name_offset = get_elf_u32(sym->st_name, aux->endianness);
-                    uint32_t st_value = get_elf_u32(sym->st_value, aux->endianness);
-                    uint16_t st_shndx = get_elf_u16(sym->st_shndx, aux->endianness);
+                    uint32_t st_name_offset = get_elf_u32(*(uint32_t*)&sym->st_name, aux->endianness);
+                    uint32_t st_value = get_elf_u32(*(uint32_t*)&sym->st_value, aux->endianness);
+                    uint16_t st_shndx = get_elf_u16(*(uint16_t*)&sym->st_shndx, aux->endianness);
                     unsigned char st_info = sym->st_info;
 
                     symbol_name = get_symbol_name(st_name_offset, aux->strtab_ptr, aux->strtab_size);
@@ -57,7 +57,7 @@ void    parsing_symbol_ent(t_stack_file **file)
             }
         }
         else if (aux->validity == 1 && aux->elf == 1 && (aux->strtab_ptr == NULL || aux->symtab_ptr == NULL))
-            aux->validity = 0;  // podría ser un ejecutable strip y nm no muestra símbolos.
+            save_file_error(aux, "no symbols");
         aux = aux->next;
     }
 }

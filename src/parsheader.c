@@ -3,7 +3,7 @@
 void    location_names(t_stack_file **files)
 {
     t_stack_file    *aux;
-    Elf32_Shdr      *shstrtab_shdr;
+    Elf32_Shdr      *shstrtab_shdr32;
     Elf64_Shdr      *shstrtab_shdr64;
     uint16_t        shstrtab_idx;       // index de la sección
     uint64_t        sh_offset;          // Offset de la sección
@@ -17,9 +17,9 @@ void    location_names(t_stack_file **files)
             if (aux->bits == BITS_32)
             {
                 shstrtab_idx = get_elf_u16(aux->elf32_header->e_shstrndx, aux->endianness);
-                shstrtab_shdr = &aux->elf32_sh_table[shstrtab_idx];
-                sh_offset = get_elf_u32(shstrtab_shdr->sh_offset, aux->endianness);
-                sh_size = get_elf_u32(shstrtab_shdr->sh_size, aux->endianness);
+                shstrtab_shdr32 = &aux->elf32_sh_table[shstrtab_idx];
+                sh_offset = get_elf_u32(shstrtab_shdr32->sh_offset, aux->endianness);
+                sh_size = get_elf_u32(shstrtab_shdr32->sh_size, aux->endianness);
             }
             else
             {

@@ -33,7 +33,7 @@ void    iterytable(t_stack_file **file)
                 {
                     shdr = &aux->elf32_sh_table[i];
                     section_name = get_section_name(get_elf_u32(shdr->sh_name, aux->endianness), aux->shstrtab_ptr, aux->shstrtab_size);
-                    if (get_elf_u32(shdr->sh_type, aux->endianness == SHT_SYMTAB))
+                    if (get_elf_u32(shdr->sh_type, aux->endianness) == SHT_SYMTAB)
                     {
                         if (aux->symtab_ptr == NULL)
                         {
@@ -46,10 +46,10 @@ void    iterytable(t_stack_file **file)
                     {
                         if (section_name && ft_strcmp(section_name, ".strtab") == 0)
                         {
-                            if (aux->shstrtab_ptr == NULL)
+                            if (aux->strtab_ptr == NULL)
                             {
-                                aux->shstrtab_ptr = aux->file_content_ptr + get_elf_u32(shdr->sh_offset, aux->endianness);
-                                aux->shstrtab_size = get_elf_u32(shdr->sh_size, aux->endianness);
+                                aux->strtab_ptr = aux->file_content_ptr + get_elf_u32(shdr->sh_offset, aux->endianness);
+                                aux->strtab_size = get_elf_u32(shdr->sh_size, aux->endianness);
                             }
                         }
                     }
@@ -85,10 +85,7 @@ void    iterytable(t_stack_file **file)
                 }
             }
             if (!aux->shstrtab_ptr || !aux->symtab_link)
-            {
                 save_file_error(aux, "no symbols");
-                aux->validity = 0;
-            }
         }
         aux = aux->next;
     }

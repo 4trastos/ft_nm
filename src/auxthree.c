@@ -5,7 +5,7 @@ void    save_file_error(t_stack_file *file, char *msg)
     if (file == NULL)
         return;
 
-    file->validity = 0;
+    //file->validity = 0;
     if (file->error_msg)
         free (file->error_msg);
     file->error_msg = ft_strdup(msg);

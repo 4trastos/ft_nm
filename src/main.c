@@ -69,6 +69,9 @@ int main(int argc, char **argv)
     extr_detc_symbol_type(&sfile);      // Asigna el carácter de tipo (ej., 'T', 'D', 'U') a cada símbolo
     tilter_collecting(&sfile);          // Filtra símbolos
     ordering_symbols(&sfile);           // Ordena símbolos alfabéticamente
+    
+    //print_stack_files(sfile);
+    
     ft_output(&sfile, argc);            // Imprime la salida final de nm
     
     clear_closing(&sfile);
