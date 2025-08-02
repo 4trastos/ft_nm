@@ -65,11 +65,23 @@ void    handle_file_error(char *program_name, char *file_name, int errnum)
 void    handle_file_error_two(char *program_name, char *file_name, char *str)
 {
     putstr_stderr(program_name);
-    putstr_stderr(": '");
+    putstr_stderr(": ");
 
-    putstr_stderr(file_name);
-    putstr_stderr("': ");
+    if (ft_strcmp("Is a directory", str) == 0)
+    {
+        putstr_stderr("Warning: «");
+        putstr_stderr(file_name);
+        putstr_stderr("» : ");
 
-    putstr_stderr(str);
-    write(2, "\n", 1);
+        putstr_stderr(str);
+        write(2, "\n", 1);
+    }
+    else
+    {
+        putstr_stderr(file_name);
+        putstr_stderr(": ");
+    
+        putstr_stderr(str);
+        write(2, "\n", 1);
+    }
 }

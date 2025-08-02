@@ -53,7 +53,7 @@ int main(int argc, char **argv)
     flag = 0;
     if (argc == 1)
     {
-        putstr_stderr("ft_nm: a.out: No such file\n");
+        putstr_stderr("ft_nm: «a.out»: No such file\n");
         return (1);
     }
     init_host_endianness();

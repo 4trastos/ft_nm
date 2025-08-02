@@ -12,7 +12,17 @@ void    ft_output(t_stack_file **file, int argc)
     aux = *file;
     while (aux)
     {
-        if (aux->validity == 1 && aux->elf == 1)
+        if (aux->validity == 1 && aux->elf == 1 && aux->symbol_list == NULL)
+        {
+             if (argc > 2)
+            {
+                write(1, "\n", 1);
+                write(1, aux->file, ft_strlen(aux->file));
+                write(1, ":\n", 2);
+            }
+            handle_file_error_two("ft_nm", aux->file, aux->error_msg);
+        }
+        else if (aux->validity == 1 && aux->elf == 1 && aux->symbol_list != NULL)
         {
             if (argc > 2)
             {
@@ -55,9 +65,9 @@ void    ft_output(t_stack_file **file, int argc)
             }
         }
         else if (aux->validity == 1 && aux->elf == 0)
-            handle_file_error_two("./ft_nm", aux->file, "file format not recognized");
+            handle_file_error_two("ft_nm", aux->file, "file format not recognized");
         else
-            handle_file_error_two("./ft_nm", aux->file, aux->error_msg);
+            handle_file_error_two("ft_nm", aux->file, aux->error_msg);
         aux = aux->next;
     }
 }

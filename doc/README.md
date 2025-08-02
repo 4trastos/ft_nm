@@ -136,7 +136,7 @@ ft_nm
 
 3. **Test de fugas** (con `valgrind`):
    ```bash
-   valgrind --leak-check=full ./ft_nm a.out
+   valgrind --leak-check=full ft_nm a.out
    ```
 
 ---
@@ -171,7 +171,7 @@ TEST_FILES="test1.o test2.o a.out libft.a no_existe.o"
 
 for file in $TEST_FILES; do
     echo "Testing $file..."
-    diff <(./ft_nm "$file") <(nm "$file")
+    diff <(ft_nm "$file") <(nm "$file")
     if [ $? -eq 0 ]; then
         echo "✅ Passed"
     else
