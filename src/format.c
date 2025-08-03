@@ -74,9 +74,7 @@ void    fileFormat_id(t_stack_file **sfile, int flag)
                         save_file_error(aux, strerror(errno));
                         aux->validity = 0;
                     }
-                    else if (my_file_info.st_size < 4 || elf[0] != 0x7F || elf[1] != 'E' || elf[2] != 'L' || elf[3] != 'F')
-                        aux->elf = 0;
-                    else
+                    else if (my_file_info.st_size >= 4 && elf[0] == 0x7F && elf[1] == 'E' && elf[2] == 'L' && elf[3] == 'F')
                     {
                         aux->elf = 1;
                         aux->file_size = my_file_info.st_size;
@@ -84,6 +82,14 @@ void    fileFormat_id(t_stack_file **sfile, int flag)
                         find_bits(elf, aux);
                         find_endianness(elf, aux);
                     }
+                    else if (my_file_info.st_size >= 8 && ft_memcmp(elf, ARMAG, 8) == 0)
+                    {
+                        aux->elf = 2;
+                        aux->file_size = my_file_info.st_size;
+                        aux->file_content_ptr = elf;
+                    }
+                    else
+                        aux->elf = 0;
                 }
             }
             flag = 0;

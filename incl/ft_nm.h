@@ -15,6 +15,8 @@
 # include <byteswap.h>
 # include <sys/mman.h>
 
+# define ARMAG "!<arch>\n"
+
 typedef enum e_host_endianness
 {
     HOST_ENDIAN_UNKNOWN = 0,
@@ -125,6 +127,7 @@ bool            is_alphanum(char c);
 char	        *ft_strchr(char *s, int c);
 void            save_file_error(t_stack_file *file, char *msg);
 void            ft_puthex(unsigned long n, int width);
+int             ft_memcmp(const void *s1, const void *s2, size_t n);
 
 //*** struct functions ***
 
