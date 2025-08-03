@@ -104,8 +104,10 @@ void    parsing_header(t_stack_file **files)
             else
             {
                 aux->validity = 0;
-                printf("ft_nm: %s: Error: Unknown bitness for file \n", aux->file);
-                return;
+                {
+                    save_file_error(aux,"Error: Unknown bitness for file");
+                    return;
+                }
             }
         }
         aux = aux->next;
