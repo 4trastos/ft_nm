@@ -70,10 +70,19 @@ void    location_headings(t_stack_file **files) //Localizar Tabla de Cabeceras d
                 sh_num = get_elf_u16(aux->elf64_header->e_shnum, aux->endianness);
                 sh_entsize = get_elf_u16(aux->elf64_header->e_shentsize, aux->endianness);
             }
-            if (sh_num == 0 || sh_entsize == 0 || sh_offset == 0 || sh_offset >= aux->file_size ||
-                (sh_offset + sh_num * sh_entsize) > aux->file_size)
+            if (sh_num == 0 || sh_entsize == 0 || sh_offset == 0)
             {
-                save_file_error(aux, "Error: Section headers on ELF file");
+                save_file_error(aux, "file format not recognized");
+                aux->validity = 0;
+            }
+            else if (sh_offset >= aux->file_size)
+            {
+                save_file_error(aux, "file too short");
+                aux->validity = 0;
+            }
+            else if ((sh_offset + sh_num * sh_entsize) > aux->file_size)
+            {
+                save_file_error(aux, "file too short");
                 aux->validity = 0;
             }
             if (aux->validity)
@@ -97,16 +106,29 @@ void    parsing_header(t_stack_file **files)
     {
         if (aux->validity == 1 && aux->elf == 1 && aux->file_content_ptr != NULL)
         {
-            if (aux->bits == BITS_32)
-                aux->elf32_header = (Elf32_Ehdr*)aux->file_content_ptr;
-            else if (aux->bits == BITS_64)
-                aux->elf64_header = (Elf64_Ehdr*)aux->file_content_ptr;
+            // Validar que el archivo tiene el tamaño mínimo de una cabecera ELF
+            if (aux->file_size < sizeof(Elf64_Ehdr))
+            {
+                save_file_error(aux, "Error: File too small to be an ELF");
+                aux->validity = 0;
+            }
+            // Validar el magic number
+            else if (ft_memcmp(aux->file_content_ptr, ELFMAG, 4) != 0)
+            {
+                save_file_error(aux, "Error: Invalid ELF magic number");
+                aux->validity = 0;
+            }
+            // Realizar el cast si las validaciones pasan
             else
             {
-                aux->validity = 0;
+                if (aux->bits == BITS_32)
+                    aux->elf32_header = (Elf32_Ehdr*)aux->file_content_ptr;
+                else if (aux->bits == BITS_64)
+                    aux->elf64_header = (Elf64_Ehdr*)aux->file_content_ptr;
+                else
                 {
-                    save_file_error(aux,"Error: Unknown bitness for file");
-                    return;
+                    save_file_error(aux, "Error: Unknown bitness for file");
+                    aux->validity = 0;
                 }
             }
         }

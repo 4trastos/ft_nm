@@ -56,7 +56,7 @@ t_stack_file    *create_node(char *str, int pos, int status)
         new->validity = 0;
     }
     else if (status == -2)
-        save_file_error(new, "Is a directory");
+        new->error_msg = NULL;
     else if (status == -3)
     {
         save_file_error(new, "Cannot stat file");
