@@ -7,7 +7,7 @@ LIB = ar rcs
 
 SRC = src/main.c src/aux.c src/ft_struct.c src/format.c src/parsheader.c src/endian_utils.c src/ft_print.c \
 		src/readheader.c src/parssymbols.c src/auxtwo.c src/extrac_symbol.c src/tilter.c src/symsort.c \
-		src/output_nm.c src/auxthree.c
+		src/output_nm.c src/auxthree.c src/process_elf.c src/ft_atoi_base.c
 
 OBJS = $(SRC:.c=.o)
 

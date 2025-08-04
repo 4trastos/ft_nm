@@ -1,5 +1,37 @@
 #include "../incl/ft_nm.h"
 
+void    *ft_memcpy(void *dst, const void *src, size_t n)
+{
+    char *d;
+    const char *s;
+    size_t i;
+	
+	d = dst;
+	s = src;
+	i = 0;
+
+    while (i < n) {
+        d[i] = s[i];
+        i++;
+    }
+    return (dst);
+}
+
+void	*ft_memset(void *b, int c, size_t len)
+{
+	unsigned char	*j;
+	size_t			i;
+
+	j = b;
+	i = 0;
+	while (i < len)
+	{
+		j[i] = (unsigned char)c;
+		i++;
+	}
+	return (b);
+}
+
 void    save_file_error(t_stack_file *file, char *msg)
 {
     if (file == NULL)
@@ -49,4 +81,18 @@ int ft_memcmp(const void *s1, const void *s2, size_t n)
         i++;
     }
     return (0);
+}
+
+int ft_strncmp(const char *s1, const char *s2, size_t n)
+{
+	size_t	i;
+
+	i = 0;
+	while ((s1[i] != '\0' || s2[i] != '\0') && i < n)
+	{
+		if (s1[i] != s2[i])
+			return ((const unsigned char) s1[i] - (const unsigned char)s2[i]);
+		i ++;
+	}
+	return (0);
 }

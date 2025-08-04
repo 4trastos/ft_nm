@@ -14,8 +14,11 @@
 # include <elf.h>
 # include <byteswap.h>
 # include <sys/mman.h>
+# include <ar.h>
 
-# define ARMAG "!<arch>\n"
+# define ARMAG   "!<arch>\n"
+# define SARMAG  8
+# define ARFMAG  "`\n"
 
 typedef enum e_host_endianness
 {
@@ -57,6 +60,17 @@ typedef enum e_nmflags
     NM_FLAG_P = 1 << 4,     //00010000 = 16 decimal (el bit 4 está encendido)
 }   t_nmflags;
 
+typedef struct s_ar_hdr
+{
+    char    ar_name[16];
+    char    ar_date[12];
+    char    ar_uid[6];
+    char    ar_gid[6];
+    char    ar_mode[8];
+    char    ar_size[10];
+    char    ar_fmag[2];
+}   t_ar_hdr;
+
 typedef struct s_symbol_info
 {
     char                    *name;
@@ -93,6 +107,7 @@ typedef struct s_stack_file
     size_t                  strtab_size;
     size_t                  symtab_size;
     uint32_t                symtab_link;
+    struct s_stack_file     *dinamic_bin;
     struct s_stack_file     *next;
 }   t_stack_file;
 
@@ -115,19 +130,26 @@ void            init_host_endianness(void);
 void            putstr_stderr(char *str);
 void            handle_file_error(char *program_name, char *file_name, int errnum);
 void            handle_file_error_two(char *program_name, char *file_name, char *str);
+void            save_file_error(t_stack_file *file, char *msg);
+void            ft_puthex(unsigned long n, int width);
+void	        *ft_memset(void *b, int c, size_t len);
+void            *ft_memcpy(void *dst, const void *src, size_t n);
 char            *ft_split(char **str, char c);
 char            *ft_strdup(char *str);
-int             findflags(char *str);
-int             ft_strcmp(const char *s1, char *s2);
-size_t          ft_strlen(char *str);
+char	        *ft_strchr(char *s, int c);
 char            *get_symbol_name(uint32_t offset_name, void *strtab_ptr, size_t strtab_size);
 char            ft_tolower(char c);
 const char      *get_section_name(uint32_t offset_name, void *shstrtab_ptr, size_t shstrtab_size);
+size_t          ft_strlen(char *str);
 bool            is_alphanum(char c);
-char	        *ft_strchr(char *s, int c);
-void            save_file_error(t_stack_file *file, char *msg);
-void            ft_puthex(unsigned long n, int width);
+int             ft_strcmp(const char *s1, char *s2);
+int             findflags(char *str);
 int             ft_memcmp(const void *s1, const void *s2, size_t n);
+int             ft_atoi_base(const char *str, int base);
+int             ft_isspace(char c);
+int             ft_isvalid(char c, int base);
+int	            ft_value_of(char c);
+int             ft_strncmp(const char *s1, const char *s2, size_t n);
 
 //*** struct functions ***
 
@@ -155,12 +177,19 @@ void            tilter_collecting(t_stack_file **file);
 void            ordering_symbols(t_stack_file **file);
 void            merge_sort(t_symbol_info **list);
 void            ft_split_list(t_symbol_info *head, t_symbol_info **front, t_symbol_info **back);
+void            ft_output(t_stack_file **file, int argc);
+void            find_bits(unsigned char *elf, t_stack_file *aux);
+void            find_endianness(unsigned char *elf, t_stack_file *aux);
 t_symbol_info   *ft_merge(t_symbol_info *a, t_symbol_info *b);
 bool            compare_symbols(t_symbol_info *a, t_symbol_info *b);
-void            ft_output(t_stack_file **file, int argc);
 int             ignore_underscores(char *a, char *b);
 int             stripped_char(char c);
 int             compare_symbol_names(t_symbol_info *a, t_symbol_info *b);
 int             get_type_sort_priority(char type_char);
+
+//*** FunctionS Static Bianry ***
+void            process_file_list(t_stack_file **sfile);
+void            process_static_archive(t_stack_file *sfile);
+void            process_elf_file(t_stack_file *sfile);
 
 #endif
